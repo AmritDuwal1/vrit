@@ -1,0 +1,324 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:poultry/helper/data_task.dart';
+import 'package:poultry/helper/global_constants.dart';
+
+import 'package:poultry/path_collection.dart';
+import 'package:http_parser/http_parser.dart';
+import 'dart:io';
+
+class APIRequest<T> {
+  final http.Request request;
+  final Endpoint endpoint;
+
+  APIRequest({required this.request, required this.endpoint});
+
+  Future<ArrayContainer<T>> send<T>(T Function(dynamic) fromJsonT) async {
+    try {
+      var request1 = http.Request(request.method, request.url);
+      request1.headers.addAll(request.headers);
+      switch (request.method) {
+        case "GET":
+          break;
+        default:
+          request1.body = request.body;
+      }
+
+      http.StreamedResponse response = await request1.send();
+
+      String responseBody = await response.stream.bytesToString();
+
+      print('Response Body: $responseBody  \n response $response');
+
+      dynamic decodedBody = jsonDecode(responseBody);
+
+      // Parse decodedBody into ArrayContainer
+      ArrayContainer<T> arrayContainer =
+      ArrayContainer<T>.fromJson(decodedBody, fromJsonT);
+
+      return arrayContainer;
+    } catch (error) {
+      print("Error: $error");
+      throw error;
+    }
+  }
+
+  Future<SingleContainer<T>> sendForSingleContainer<T>(
+      T Function(dynamic) fromJsonT) async {
+    try {
+      var request1 = http.Request(request.method, request.url);
+      request1.headers.addAll(request.headers);
+      switch (request.method) {
+        case "GET":
+        case "DELETE":
+          request1.headers['Accept'] = 'application/json';
+          request1.headers['Vary'] = 'Accept';
+          // request1.headers['Cookie'] =
+          //     'csrftoken=kqKOdAfpxHsPoAet9BtLaphPUmlZok6BeTZMxO12FyoxCxrDvV7in13KxIs2Yq7u; sessionid=u95xym9jd45yvr1k3u9srsfsfxppgkko';  //this is not necessary remove it later
+          // request1.body = '''''';
+          break;
+        default:
+          request1.body = request.body;
+      }
+
+      print(
+          '\n token: ${GlobalConstants.getUser()?.token ?? ""} Response Body:  \n:method ${request1.method} \n:body  ${request1.body} \n all header: ${request1.headers} ');
+      http.StreamedResponse response = await request1.send();
+
+      // String responseBody = await response.stream.bytesToString();
+      String responseBody;
+      if (response.contentLength == 0) {
+        responseBody = "";
+      } else {
+        responseBody = await response.stream.bytesToString();
+      }
+
+      print("responseBody: ${responseBody}");
+
+
+      // Check if the response body is empty
+      if (responseBody.isEmpty) {
+        print('Response body is empty');
+      } else {
+        print("Response Body: $responseBody");
+      }
+
+      dynamic decodedBody = jsonDecode(responseBody);
+      // Print the decoded body
+      print('Decoded Body: $decodedBody');
+      if (decodedBody != null) {
+        SingleContainer<T> singleContainer =
+        SingleContainer<T>.fromJson(decodedBody, fromJsonT);
+        return singleContainer;
+      } else {
+        throw Exception(
+            'Decoded body is null'); // Or handle the error in another way
+      }
+    } catch (error) {
+      print("Error: $error");
+      throw error;
+    }
+  }
+
+  Future<SingleContainer<T>> sendMultimediaForSingleContainer<T>(
+      String method,
+      T Function(dynamic) fromJsonT,
+      Map<String, dynamic> bodyParams,
+      Map<String, List<String>> filesByField,
+      ) async {
+    try {
+      var request1 = http.MultipartRequest(method, request.url);
+      request1.headers.addAll(request.headers);
+      print(filesByField.length);
+      // Add files for each field
+      filesByField.forEach((fieldName, filePaths) {
+        for (var filePath in filePaths) {
+          if (File(filePath).existsSync()) {
+            List<int> fileBytes = File(filePath).readAsBytesSync();
+            var multipartFile = http.MultipartFile.fromBytes(
+              fieldName,
+              fileBytes,
+              // filename: '${fieldName}.jpg', // Change filename if needed
+              filename: '${DateTime.now().microsecondsSinceEpoch}.jpg', // Use a unique filename
+              contentType: MediaType('image', 'jpg'), // Change content type if needed
+            );
+            request1.files.add(multipartFile);
+            print(multipartFile);
+          } else {
+            print('File not found: $filePath');
+          }
+        }
+      });
+
+      // Add other form fields
+      bodyParams.forEach((key, value) {
+        request1.fields[key] = value.toString();
+      });
+
+      // print(
+      //     '\n token: ${GlobalConstants.getUser()?.token ?? ""} Response Body:  \n:method ${request1.method} \n:body  ${bodyParams} \n all header: ${request1.headers} ');
+      print('Request details:');
+      print('Token: ${GlobalConstants.getUser()?.token ?? ""}');
+      print('Method: ${request1.method}');
+      print('Body: $bodyParams');
+      print('Headers: ${request1.headers}');
+
+      http.StreamedResponse response = await request1.send();
+      String responseBody = await response.stream.bytesToString();
+
+      dynamic decodedBody = jsonDecode(responseBody);
+      print('Decoded Body: $decodedBody');
+
+      if (decodedBody != null) {
+        SingleContainer<T> singleContainer =
+        SingleContainer<T>.fromJson(decodedBody, fromJsonT);
+        return singleContainer;
+      } else {
+        throw Exception('Decoded body is null');
+      }
+    } catch (error) {
+      print("Error: $error");
+      throw error;
+    }
+  }
+
+  String getKey(Uri url) {
+    switch (endpoint) {
+      default:
+        return url.toString();
+    }
+  }
+}
+
+enum Endpoint {
+  // hotels,
+  login,
+  // register,
+  // favorite,
+  // unfavorite,
+  // getFavorites,
+  // getUserDetail,
+  // updateUserDetail,
+  // createHotel,
+  // createBannerImage,
+  // createRoomType,
+  // creatorHotels,
+  // editHotel,
+  // editRoomType,
+  // editBannerImage,
+  // createBooking,
+  // bookingList,
+  // acceptBooking,
+  deleteUser,
+  googleLogin,
+}
+
+extension EndpointExtension on Endpoint {
+  String get path {
+    switch (this) {
+      // case Endpoint.hotels:
+      //   return "api/hotels/?page=";
+      case Endpoint.login:
+        return "poultryapp/api/login/";
+      // case Endpoint.register:
+      //   return "api/users/create/";
+      // case Endpoint.favorite:
+      // case Endpoint.getFavorites:
+      //   return "api/favorites/";
+      // case Endpoint.unfavorite:
+      //   return "api/favorites/";
+      // case Endpoint.getUserDetail:
+      //   return "api/user-detail/";
+      // case Endpoint.updateUserDetail:
+      //   return "api/user/profile/update/";
+      // case Endpoint.createHotel:
+      //   return "api/hotels/create/";
+      // case Endpoint.createBannerImage:
+      //   return "api/upload_banner_image/";
+      // case Endpoint.createRoomType:
+      //   return "api/upload-room-types/";
+      // case Endpoint.creatorHotels:
+      //   return "api/creator-hotels/";
+      // case Endpoint.editHotel:
+      //   return "api/edit-hotels/";
+      // case Endpoint.editRoomType:
+      //   return "api/edit-room-types/";
+      // case Endpoint.editBannerImage:
+      //   return "api/banner_images/";
+      // case Endpoint.createBooking:
+      //   return "api/request-booking/";
+      // case Endpoint.bookingList:
+      //   return "api/list-bookings/";
+      // case Endpoint.acceptBooking:
+      //   return "api/accept-booking/";
+      case Endpoint.deleteUser:
+        return "api/delete-user/";
+      case Endpoint.googleLogin:
+        return "api/rest-auth/google/";
+
+    }
+  }
+
+  String pathWithPage(int page) {
+    switch (this) {
+      // case Endpoint.hotels:
+      //   return "api/hotels/?page=$page";
+      // case Endpoint.unfavorite:
+      //   return "api/favorites/$page";
+
+      default:
+        return "";
+    }
+  }
+
+  String appendRemainingUrl(String remainingUrl) {
+    switch (this) {
+      case Endpoint.deleteUser:
+        return "${GlobalConstants.baseUrl}/$path$remainingUrl";
+      default:
+        return "";
+    }
+  }
+
+  String get method {
+    switch (this) {
+      case Endpoint.login:
+        return "POST";
+      default:
+        return "GET";
+    }
+  }
+
+  bool get needsAuthorization {
+    switch (this) {
+      // case Endpoint.favorite:
+      // case Endpoint.unfavorite:
+      // case Endpoint.getFavorites:
+      // case Endpoint.createHotel:
+      // case Endpoint.creatorHotels:
+      // case Endpoint.editHotel:
+      // case Endpoint.editBannerImage:
+      // case Endpoint.createBooking:
+      // case Endpoint.acceptBooking:
+      case Endpoint.deleteUser:
+        return true;
+    // case Endpoint.login:
+    //   return true;
+      default:
+        return false;
+    }
+  }
+
+  APIRequest request(String urlString, Map<String, dynamic>? body) {
+    final url = Uri.parse(urlString);
+    print(url);
+    var request = http.Request(method, url);
+    request.headers['Content-Type'] = 'application/json';
+    if ((GlobalConstants.getUser()?.token ?? "") != "") {
+      request.headers['Authorization'] =
+      'Token ${GlobalConstants.getUser()?.token ?? ""}';
+    }
+    if (method == "POST" || method == "PUT" || method == "PATCH") {
+      // request.headers['Cookie'] = 'csrftoken=sRtN2uTkQ3fXPPPdUG56XYLkkytGkszYfwXcHYHjYlTuEKzsyNm4MgQydHt4PNZx; sessionid=iv7asvbuyljfxlwf8nrqvz35trcny99g';
+      if (body != null) {
+        request.body = jsonEncode(body);
+      }
+    }
+    return APIRequest(request: request, endpoint: this);
+  }
+
+  APIRequest apiRequest(Map<String, dynamic> params) {
+    var urlString = "${GlobalConstants.baseUrl}/$path";
+    String page = "?page=${params['page'] ?? 1}";
+
+    String remainingUrl = "${params['remaining_url']}";
+    // only for url changes
+    switch (this) {
+      // case Endpoint.hotels:
+      //   String latLong = "";
+      default:
+        urlString = "${GlobalConstants.baseUrl}/$path";
+    }
+    return request(urlString, params);
+  }
+}
