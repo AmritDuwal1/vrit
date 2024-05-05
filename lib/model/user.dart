@@ -1,8 +1,11 @@
+//
+//
 // class User {
 //   String? firstName;
 //   String? lastName;
 //   String? username;
 //   String? email;
+//   String? password; // New password field
 //   String? token;
 //   int? id;
 //
@@ -12,6 +15,7 @@
 //     this.lastName,
 //     this.username,
 //     this.email,
+//     this.password, // Include password in constructor
 //     this.token,
 //     this.id,
 //   });
@@ -22,6 +26,7 @@
 //       lastName: json['last_name'],
 //       username: json['username'],
 //       email: json['email'],
+//       password: json['password'], // Assign password value from JSON
 //       token: json['token'],
 //       id: json['id'],
 //     );
@@ -31,6 +36,7 @@
 //     return {
 //       'username': username,
 //       'email': email,
+//       'password': password, // Include password in JSON
 //       'first_name': firstName,
 //       'last_name': lastName,
 //       'token': token,
@@ -45,19 +51,20 @@ class User {
   String? lastName;
   String? username;
   String? email;
-  String? password; // New password field
+  String? password;
   String? token;
   int? id;
-
+  String? image; // New field for storing image URL
 
   User({
     this.firstName,
     this.lastName,
     this.username,
     this.email,
-    this.password, // Include password in constructor
+    this.password,
     this.token,
     this.id,
+    this.image, // Include imageUrl in constructor
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -66,9 +73,10 @@ class User {
       lastName: json['last_name'],
       username: json['username'],
       email: json['email'],
-      password: json['password'], // Assign password value from JSON
+      password: json['password'],
       token: json['token'],
       id: json['id'],
+      image: json['image_url'], // Assign imageUrl value from JSON
     );
   }
 
@@ -76,11 +84,12 @@ class User {
     return {
       'username': username,
       'email': email,
-      'password': password, // Include password in JSON
+      'password': password,
       'first_name': firstName,
       'last_name': lastName,
       'token': token,
       'id': id,
+      'image_url': image, // Include imageUrl in JSON
     };
   }
 }

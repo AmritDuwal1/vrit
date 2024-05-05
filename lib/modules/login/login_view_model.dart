@@ -26,7 +26,6 @@ class LoginViewModel extends ChangeNotifier {
       print('Login successful: ${user.token}');
       isLoading = false;
       _isLoggedIn = true;
-
       saveUser(user);
       GlobalConstants.saveUser(user);
       print(GlobalConstants.getUser());

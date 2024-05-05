@@ -142,14 +142,15 @@ class _LoginScreenState extends State<LoginScreen> {
   void listenToViewModel() {
     viewModel.removeListener(listenerFunction);
     viewModel.addListener(listenerFunction);
-    // viewModel.addListener(() {
-    //   showResultDialog(context, viewModel.result!, () {
-    //     if (viewModel.result!.isSuccess) {
-    //       Navigator.pop(context, true);
-    //     }
-    //     viewModel.result = null;
-    //   });
-    // });
+    viewModel.addListener(() {
+      showResultDialog(context, viewModel.result!, () {
+
+        if (viewModel.result!.isSuccess) {
+          Navigator.pop(context, true);
+        }
+        viewModel.result = null;
+      });
+    });
   }
 
   void listenerFunction() {

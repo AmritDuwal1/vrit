@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
 
-import 'package:nepal_hotels/modules/creator_hotels/creator_hotels_screen.dart';
-import 'package:nepal_hotels/modules/login/login_screen.dart';
-import 'package:nepal_hotels/modules/profile/profile_view_model.dart';
-import 'package:nepal_hotels/path_collection.dart';
+import 'package:poultry/modules/login/login_screen.dart';
+import 'package:poultry/path_collection.dart';
+import 'package:poultry/profile/profile_view_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   final VoidCallback onLogout;
@@ -74,37 +73,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   buildProfileOption('Edit Profile', Icons.edit),
                   // buildProfileOption('Notifications', Icons.notifications),
-                  if (GlobalConstants.getUser()?.isHotelOwner == true)
-                    buildProfileOption('Create Hotel', Icons.hotel, onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CreateAndEditHotelScreen(),
-                        ),
-                      );
-                    }),
-                  if (GlobalConstants.getUser()?.isHotelOwner == true)
-                    buildProfileOption('My Hotels', Icons.hotel_class_rounded,
-                        onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CreatorHotelsScreen(),
-                        ),
-                      );
-                    }),
-                  buildProfileOption(
-                      GlobalConstants.getUser()?.isHotelOwner == true
-                          ? 'Booking Requests'
-                          : 'My Requests',
-                      Icons.people, onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BookingRequestScreen(),
-                      ),
-                    );
-                  }),
+                  // if (GlobalConstants.getUser()?.isHotelOwner == true)
+                  //   buildProfileOption('Create Hotel', Icons.hotel, onTap: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => CreateAndEditHotelScreen(),
+                  //       ),
+                  //     );
+                  //   }),
+                  // if (GlobalConstants.getUser()?.isHotelOwner == true)
+                  //   buildProfileOption('My Hotels', Icons.hotel_class_rounded,
+                  //       onTap: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => CreatorHotelsScreen(),
+                  //       ),
+                  //     );
+                  //   }),
+                  // buildProfileOption(
+                  //     GlobalConstants.getUser()?.isHotelOwner == true
+                  //         ? 'Booking Requests'
+                  //         : 'My Requests',
+                  //     Icons.people, onTap: () {
+                  //   Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //       builder: (context) => BookingRequestScreen(),
+                  //     ),
+                  //   );
+                  // }),
                   buildProfileOption('Delete Account', Icons.delete, color: Colors.blue,
                       onTap: () {
                     showDialog(
@@ -259,14 +258,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   );
                 } else {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => EditProfileScreen(
-                            user: Provider.of<ProfileViewModel>(context,
-                                    listen: false)
-                                .user)), // Navigate to EditProfileScreen
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //       builder: (context) => EditProfileScreen(
+                  //           user: Provider.of<ProfileViewModel>(context,
+                  //                   listen: false)
+                  //               .user)), // Navigate to EditProfileScreen
+                  // );
                 }
               }
             },

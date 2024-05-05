@@ -1,4 +1,4 @@
-import 'package:nepal_hotels/path_collection.dart';
+import 'package:poultry/path_collection.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   final UserAPI userAPI = UserAPI(); // Initialize your API object
@@ -13,18 +13,18 @@ class ProfileViewModel extends ChangeNotifier {
     notifyListeners(); // Notify listeners to update the UI
 
     // Call the API method to fetch user details
-    userAPI.getUserDetail((response) {
-      print('User details fetched: $response');
-      user = response; // Store the fetched user details
-      isLoading = false; // Set loading flag to false
-      notifyListeners(); // Notify listeners to update the UI
-    }, (error) {
-      // Handle failure
-      this.error = error;
-      print('Error fetching user details: $error');
-      isLoading = false; // Set loading flag to false
-      notifyListeners(); // Notify listeners to update the UI
-    });
+    // userAPI.getUserDetail((response) {
+    //   print('User details fetched: $response');
+    //   user = response; // Store the fetched user details
+    //   isLoading = false; // Set loading flag to false
+    //   notifyListeners(); // Notify listeners to update the UI
+    // }, (error) {
+    //   // Handle failure
+    //   this.error = error;
+    //   print('Error fetching user details: $error');
+    //   isLoading = false; // Set loading flag to false
+    //   notifyListeners(); // Notify listeners to update the UI
+    // });
   }
 
   void deleteUser() {

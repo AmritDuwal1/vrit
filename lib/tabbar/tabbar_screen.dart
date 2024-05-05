@@ -1,6 +1,7 @@
 
 import 'dart:async';
 
+import 'package:poultry/modules/home/home_screen.dart';
 import 'package:poultry/path_collection.dart';
 
 class TabBarScreen extends StatefulWidget {
@@ -12,21 +13,21 @@ class TabBarScreen extends StatefulWidget {
 
 class _TabBarScreenState extends State<TabBarScreen> {
   late int _currentIndex;
-  late ProfileScreen _profileScreen;
+  // late ProfileScreen _profileScreen;
   late StreamSubscription<bool> _loginStatusSubscription;
 
   @override
   void initState() {
     super.initState();
     _currentIndex = 0;
-    _profileScreen = ProfileScreen(onLogout: () {
-      setState(() {
-        _currentIndex = 0;
-      });
-      _loginStatusSubscription = GlobalConstants.loginStatusStream.listen((loggedIn) {
-        setState(() {}); // Update the UI
-      });
-    });
+    // _profileScreen = ProfileScreen(onLogout: () {
+    //   setState(() {
+    //     _currentIndex = 0;
+    //   });
+    //   _loginStatusSubscription = GlobalConstants.loginStatusStream.listen((loggedIn) {
+    //     setState(() {}); // Update the UI
+    //   });
+    // });
   }
 
   @override
@@ -43,7 +44,8 @@ class _TabBarScreenState extends State<TabBarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _currentIndex == 2 ? _profileScreen : _tabs[_currentIndex],
+      // body: _currentIndex == 2 ? _profileScreen : _tabs[_currentIndex],
+      body:  _tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -77,7 +79,7 @@ class Tab1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const HomeScreen();
+    return  HomeScreen();
   }
 }
 
@@ -86,7 +88,7 @@ class Tab2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SavedScreen();
+    return HomeScreen();
   }
 }
 //
