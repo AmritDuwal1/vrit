@@ -3,8 +3,8 @@ import 'package:poultry/helper/global_constants.dart';
 import 'package:poultry/module/login/login_screen.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await GlobalConstants.initSharedPreferences();
+  // WidgetsFlutterBinding.ensureInitialized();
+  GlobalConstants.initSharedPreferences();
   runApp(const MyApp());
 }
 
