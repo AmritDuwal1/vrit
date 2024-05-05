@@ -173,7 +173,7 @@ class APIRequest<T> {
 enum Endpoint {
   // hotels,
   login,
-  // register,
+  register,
   // favorite,
   // unfavorite,
   // getFavorites,
@@ -200,8 +200,8 @@ extension EndpointExtension on Endpoint {
       //   return "api/hotels/?page=";
       case Endpoint.login:
         return "poultryapp/api/login/";
-      // case Endpoint.register:
-      //   return "api/users/create/";
+      case Endpoint.register:
+        return "api/users/create/";
       // case Endpoint.favorite:
       // case Endpoint.getFavorites:
       //   return "api/favorites/";
