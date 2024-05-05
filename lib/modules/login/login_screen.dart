@@ -1,11 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:poultry/helper/show_result_dialog.dart';
-import 'package:poultry/module/register/register_Screen.dart';
-import 'package:poultry/module/signin/login_view_model.dart';
 
 import 'package:poultry/path_collection.dart';
-
-// import '../register/register_Screen.dart';
 
 class LoginScreen extends StatefulWidget {
    LoginScreen({Key? key}) : super(key: key);
@@ -23,6 +17,8 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     viewModel = LoginViewModel();
     listenToViewModel();
+    usernameController.text = "admin146";
+    passwordController.text = "Nepal@123";
   }
 
   @override
@@ -116,16 +112,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
           ],
         ),
-
-
-        // const SizedBox(height: 12.0),
-        // buildLoginOption('Continue with Google', 'assets/google.webp', () {}),
-        // const SizedBox(height: 12.0),
-        // buildLoginOption('Continue with Facebook', 'assets/fb.png', () {}),
-        // const SizedBox(height: 12.0),
-        // buildLoginOption('Continue with WhatsApp', 'assets/whatsapp.png', () {}),
-        // const SizedBox(height: 12.0),
-        // buildLoginOption('Mobile Number', 'assets/phone.png', () {}),
       ),
     );
   }
@@ -141,7 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
               imagePath,
               height: 25.0,
             ),
-            const SizedBox(width: 12.0),
+            const SizedBox(width: 6.0),
             Text(title),
           ],
         ),
