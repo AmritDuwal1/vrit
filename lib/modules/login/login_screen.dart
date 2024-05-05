@@ -1,5 +1,6 @@
 
 import 'package:poultry/path_collection.dart';
+import 'package:poultry/tabbar/tabbar_screen.dart';
 
 class LoginScreen extends StatefulWidget {
    LoginScreen({Key? key}) : super(key: key);
@@ -144,14 +145,19 @@ class _LoginScreenState extends State<LoginScreen> {
     viewModel.addListener(listenerFunction);
     viewModel.addListener(() {
       showResultDialog(context, viewModel.result!, () {
-
         if (viewModel.result!.isSuccess) {
-          Navigator.pop(context, true);
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TabBarScreen(), // Replace TabBarScreen with your actual TabBar implementation
+            ),
+          );
         }
         viewModel.result = null;
       });
     });
   }
+
 
   void listenerFunction() {
     // Callback logic
