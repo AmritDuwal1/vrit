@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:poultry/helper/show_result_dialog.dart';
+import 'package:poultry/module/register/register_Screen.dart';
 import 'package:poultry/module/signin/login_view_model.dart';
 
 import 'package:poultry/path_collection.dart';
 
-import '../register/register_Screen.dart';
-import 'login_view_model.dart';
+// import '../register/register_Screen.dart';
 
 class LoginScreen extends StatefulWidget {
    LoginScreen({Key? key}) : super(key: key);
@@ -39,7 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             const Center(
               child: Text(
-                "Nepal Hotels",
+                "Poultry",
                 style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
               ),
             ),

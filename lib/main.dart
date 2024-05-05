@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:poultry/helper/global_constants.dart';
-import 'package:poultry/module/login/login_screen.dart';
+import 'package:poultry/module/signin//login_screen.dart';
 
 Future<void> main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
-  GlobalConstants.initSharedPreferences();
+  WidgetsFlutterBinding.ensureInitialized();
+  await GlobalConstants.initSharedPreferences(); // Initialize SharedPreferences
   runApp(const MyApp());
 }
 

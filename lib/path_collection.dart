@@ -7,6 +7,8 @@ export 'package:poultry/helper/global_constants.dart';
 // view model
 export 'package:poultry/extensions/result.dart';
 export 'package:poultry/model/user.dart';
+export 'package:poultry/helper/data_task.dart';
+export 'package:poultry/model/successMesage.dart';
 // Helper
 export 'package:poultry/helper/global_constants.dart';
 // library
