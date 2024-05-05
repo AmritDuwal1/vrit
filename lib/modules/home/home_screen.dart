@@ -9,64 +9,109 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Home'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'Number of Egg Crates Today:',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Container(
-              height: 200,
-              // Implement your graph widget here to display the number of egg crates for today
-            ),
-            SizedBox(height: 16),
-            Text(
-              'Egg Production for the Last 30 Days:',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Container(
-              height: 200,
-              // Implement your graph widget here to display egg production for the last 30 days
-              child: LineChart(
-                // Sample data for the line chart (replace with actual data)
-                LineChartData(
-                  titlesData: FlTitlesData(show: false),
-                  borderData: FlBorderData(show: false),
-                  gridData: FlGridData(show: false),
-                  lineBarsData: [
-                    LineChartBarData(
-                      spots: [
-                        FlSpot(0, 3),
-                        FlSpot(1, 2),
-                        FlSpot(2, 4),
-                        FlSpot(3, 5),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              buildSectionTitle('Number of Egg Crates Today:'),
+              buildGraphContainer(), // Implement this method to display the graph
+              SizedBox(height: 16),
+              buildSectionTitle('Egg Production for the Last 30 Days:'),
+              buildEggProductionGraph(), // Implement this method to display the egg production graph
+              SizedBox(height: 16),
+              buildSectionTitle('Number of Chick Deaths:'),
+              buildGraphContainer(), // Implement this method to display the graph for chick deaths
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
-                        // Add more data spots for the last 30 days
-                      ],
-                      isCurved: true,
-                      colors: [Colors.blue],
-                      barWidth: 3,
-                      isStrokeCapRound: true,
-                      belowBarData: BarAreaData(show: false),
-                    ),
-                  ],
-                ),
-              ),
+  Widget buildSectionTitle(String title) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: 8),
+      ],
+    );
+  }
+
+  // Widget buildGraphContainer() {
+  //   return Container(
+  //     height: 200,
+  //     color: Colors.grey.withOpacity(0.3), // Placeholder color
+  //     // Implement your graph widget here
+  //   );
+  // }
+
+
+  Widget buildGraphContainer() {
+    return Container(
+      height: 200,
+      padding: EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: Colors.grey.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: Colors.grey.withOpacity(0.3)),
+      ),
+      child: LineChart(
+        LineChartData(
+          titlesData: FlTitlesData(show: false),
+          borderData: FlBorderData(show: false),
+          gridData: FlGridData(show: false),
+          lineBarsData: [
+            LineChartBarData(
+              spots: [
+                // Sample data for the graph (replace with actual data)
+                FlSpot(0, 10),
+                FlSpot(1, 20),
+                FlSpot(2, 15),
+                FlSpot(3, 25),
+                // Add more data spots as needed
+              ],
+              isCurved: true,
+              colors: [Colors.green],
+              barWidth: 2,
+              isStrokeCapRound: true,
+              belowBarData: BarAreaData(show: false),
             ),
-            SizedBox(height: 16),
-            Text(
-              'Number of Chick Deaths:',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Container(
-              height: 200,
-              // Implement your graph widget here to display the number of chick deaths
+          ],
+        ),
+      ),
+    );
+  }
+
+
+  Widget buildEggProductionGraph() {
+    return Container(
+      height: 200,
+      child: LineChart(
+        LineChartData(
+          titlesData: FlTitlesData(show: false),
+          borderData: FlBorderData(show: false),
+          gridData: FlGridData(show: false),
+          lineBarsData: [
+            LineChartBarData(
+              spots: [
+                // Sample data for the last 30 days (replace with actual data)
+                FlSpot(0, 5),
+                FlSpot(1, 8),
+                FlSpot(2, 6),
+                FlSpot(3, 9),
+                // Add more data spots for the last 30 days
+              ],
+              isCurved: true,
+              colors: [Colors.blue],
+              barWidth: 3,
+              isStrokeCapRound: true,
+              belowBarData: BarAreaData(show: false),
             ),
           ],
         ),
