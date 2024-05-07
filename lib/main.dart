@@ -1,26 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:poultry/helper/global_constants.dart';
+import 'package:poultry/modules/home/home_view_model.dart';
 import 'package:poultry/modules/login//login_screen.dart';
+import 'package:poultry/path_collection.dart';
+import 'package:poultry/profile/profile_view_model.dart';
+import 'package:poultry/tabbar/tabbar_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GlobalConstants.initSharedPreferences(); // Initialize SharedPreferences
-  runApp(const MyApp());
+  User? user = GlobalConstants.getUser(); // Retrieve user from SharedPreferences
+  Widget homeScreen = user != null ? TabBarScreen() : LoginScreen(); // Determine the home screen based on user login status
+
+  // runApp(const MyApp());
+  runApp(MyApp(homeScreen: homeScreen));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Widget homeScreen;
 
+  // const MyApp({super.key});
+  const MyApp({Key? key, required this.homeScreen}) : super(key: key);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<HomeViewModel>(
+          create: (context) => HomeViewModel(),
+        ),
+        ChangeNotifierProvider<ProfileViewModel>(
+          create: (context) => ProfileViewModel(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        home: homeScreen,
       ),
-      home: LoginScreen(),
     );
   }
 }

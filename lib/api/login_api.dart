@@ -22,7 +22,7 @@ class LoginAPI {
       );
       Map<String, String>  body =  {
         'username': username,
-    'password': password,
+      'password': password,
   };
       // final apiRequest = APIRequest<SingleContainer<User>>(
       //   request: Endpoint.login.apiRequest(body).request,

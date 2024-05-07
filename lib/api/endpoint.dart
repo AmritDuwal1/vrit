@@ -171,24 +171,9 @@ class APIRequest<T> {
 }
 
 enum Endpoint {
-  // hotels,
   login,
   register,
-  // favorite,
-  // unfavorite,
-  // getFavorites,
-  // getUserDetail,
-  // updateUserDetail,
-  // createHotel,
-  // createBannerImage,
-  // createRoomType,
-  // creatorHotels,
-  // editHotel,
-  // editRoomType,
-  // editBannerImage,
-  // createBooking,
-  // bookingList,
-  // acceptBooking,
+  poultryStatsSummary,
   deleteUser,
   googleLogin,
 }
@@ -196,56 +181,21 @@ enum Endpoint {
 extension EndpointExtension on Endpoint {
   String get path {
     switch (this) {
-      // case Endpoint.hotels:
-      //   return "api/hotels/?page=";
       case Endpoint.login:
         return "poultryapp/api/login/";
       case Endpoint.register:
         return "api/users/create/";
-      // case Endpoint.favorite:
-      // case Endpoint.getFavorites:
-      //   return "api/favorites/";
-      // case Endpoint.unfavorite:
-      //   return "api/favorites/";
-      // case Endpoint.getUserDetail:
-      //   return "api/user-detail/";
-      // case Endpoint.updateUserDetail:
-      //   return "api/user/profile/update/";
-      // case Endpoint.createHotel:
-      //   return "api/hotels/create/";
-      // case Endpoint.createBannerImage:
-      //   return "api/upload_banner_image/";
-      // case Endpoint.createRoomType:
-      //   return "api/upload-room-types/";
-      // case Endpoint.creatorHotels:
-      //   return "api/creator-hotels/";
-      // case Endpoint.editHotel:
-      //   return "api/edit-hotels/";
-      // case Endpoint.editRoomType:
-      //   return "api/edit-room-types/";
-      // case Endpoint.editBannerImage:
-      //   return "api/banner_images/";
-      // case Endpoint.createBooking:
-      //   return "api/request-booking/";
-      // case Endpoint.bookingList:
-      //   return "api/list-bookings/";
-      // case Endpoint.acceptBooking:
-      //   return "api/accept-booking/";
+      case Endpoint.poultryStatsSummary:
+        return "poultryapp/api/poultry-stats-summary/";
       case Endpoint.deleteUser:
         return "api/delete-user/";
       case Endpoint.googleLogin:
         return "api/rest-auth/google/";
-
     }
   }
 
   String pathWithPage(int page) {
     switch (this) {
-      // case Endpoint.hotels:
-      //   return "api/hotels/?page=$page";
-      // case Endpoint.unfavorite:
-      //   return "api/favorites/$page";
-
       default:
         return "";
     }
@@ -271,19 +221,9 @@ extension EndpointExtension on Endpoint {
 
   bool get needsAuthorization {
     switch (this) {
-      // case Endpoint.favorite:
-      // case Endpoint.unfavorite:
-      // case Endpoint.getFavorites:
-      // case Endpoint.createHotel:
-      // case Endpoint.creatorHotels:
-      // case Endpoint.editHotel:
-      // case Endpoint.editBannerImage:
-      // case Endpoint.createBooking:
-      // case Endpoint.acceptBooking:
       case Endpoint.deleteUser:
+      case Endpoint.poultryStatsSummary:
         return true;
-    // case Endpoint.login:
-    //   return true;
       default:
         return false;
     }
@@ -314,8 +254,6 @@ extension EndpointExtension on Endpoint {
     String remainingUrl = "${params['remaining_url']}";
     // only for url changes
     switch (this) {
-      // case Endpoint.hotels:
-      //   String latLong = "";
       default:
         urlString = "${GlobalConstants.baseUrl}/$path";
     }

@@ -2,7 +2,9 @@
 import 'dart:async';
 
 import 'package:poultry/modules/home/home_screen.dart';
+import 'package:poultry/modules/order/order_screen.dart';
 import 'package:poultry/path_collection.dart';
+import 'package:poultry/profile/profile_screen.dart';
 
 class TabBarScreen extends StatefulWidget {
   const TabBarScreen({Key? key}) : super(key: key);
@@ -39,6 +41,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
   final List<Widget> _tabs = [
     const Tab1(),
     const Tab2(),
+    const Tab3(),
   ];
 
   @override
@@ -60,10 +63,10 @@ class _TabBarScreenState extends State<TabBarScreen> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Saved',
+            icon: Icon(Icons.list),
+            label: 'Orders',
           ),
-          if (GlobalConstants.isLoggedIn == true)
+          // if (GlobalConstants.isLoggedIn == true)
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
@@ -88,15 +91,17 @@ class Tab2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return HomeScreen();
+    return OrderScreen();
   }
 }
-//
-// class Tab3 extends StatelessWidget {
-//   const Tab3({Key? key}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return const SavedScreen(); // Placeholder for Tab3
-//   }
-// }
+
+class Tab3 extends StatelessWidget {
+  const Tab3({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ProfileScreen(onLogout: () {
+
+    });; // Placeholder for Tab3
+  }
+}
