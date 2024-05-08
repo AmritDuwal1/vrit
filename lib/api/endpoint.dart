@@ -234,10 +234,13 @@ extension EndpointExtension on Endpoint {
     print(url);
     var request = http.Request(method, url);
     request.headers['Content-Type'] = 'application/json';
+    //  commented the token part
+    /*
     if ((GlobalConstants.getUser()?.token ?? "") != "") {
       request.headers['Authorization'] =
       'Token ${GlobalConstants.getUser()?.token ?? ""}';
     }
+    */
     if (method == "POST" || method == "PUT" || method == "PATCH") {
       // request.headers['Cookie'] = 'csrftoken=sRtN2uTkQ3fXPPPdUG56XYLkkytGkszYfwXcHYHjYlTuEKzsyNm4MgQydHt4PNZx; sessionid=iv7asvbuyljfxlwf8nrqvz35trcny99g';
       if (body != null) {
