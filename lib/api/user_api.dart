@@ -29,9 +29,9 @@ class UserAPI {
           'API Request: ${apiRequest.request.method} ${apiRequest.request.url}');
       SingleContainer<User> response = await apiRequest
           .sendForSingleContainer<User>((json) => User.fromJson(json));
-      if (response.results != null) {
-        print('API Response: ${response.results}');
-        success(response.results!); // Unwrap results since it's nullable
+      if (response.data != null) {
+        print('API Response: ${response.data}');
+        success(response.data!); // Unwrap results since it's nullable
       } else {
         String errorMessage = response.error?.message ??
             response.detail ??
@@ -216,9 +216,9 @@ class UserAPI {
 
       var response = await apiRequest.sendMultimediaForSingleContainer(
           "POST", (json) => User.fromJson(json), requestBody, filesByField);
-      if (response.results != null) {
-        print('API Response: ${response.results}');
-        success(response.results!); // Unwrap results since it's nullable
+      if (response.data != null) {
+        print('API Response: ${response.data}');
+        success(response.data!); // Unwrap results since it's nullable
       } else {
         String errorMessage = response.error?.message ??
             response.detail ??
@@ -247,9 +247,9 @@ class UserAPI {
       SingleContainer<String> response = await apiRequest
           .sendForSingleContainer<String>((json) => json.toString());
 
-      if (response.results != null) {
+      if (response.data != null) {
         print('API Response: User deleted successfully');
-        success(response.results!); // Pass true to indicate successful deletion
+        success(response.data!); // Pass true to indicate successful deletion
       } else {
         failure(FlutterError(response.error?.message ??
             response.detail ??
@@ -293,9 +293,9 @@ class UserAPI {
       print('API Request: ${apiRequest.request.method} ${apiRequest.request.url}');
       SingleContainer<User> response = await apiRequest
           .sendForSingleContainer<User>((json) => User.fromJson(json));
-      if (response.results != null) {
-        print('API Response: ${response.results}');
-        success(response.results!); // Unwrap results since it's nullable
+      if (response.data != null) {
+        print('API Response: ${response.data}');
+        success(response.data!); // Unwrap results since it's nullable
       } else {
         String errorMessage = response.error?.message ??
             response.detail ??

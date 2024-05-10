@@ -176,6 +176,8 @@ enum Endpoint {
   poultryStatsSummary,
   deleteUser,
   googleLogin,
+  addToCart,
+  cartList,
 }
 
 extension EndpointExtension on Endpoint {
@@ -191,24 +193,26 @@ extension EndpointExtension on Endpoint {
         return "api/delete-user/";
       case Endpoint.googleLogin:
         return "api/rest-auth/google/";
+      case Endpoint.addToCart:
+      case Endpoint.cartList:
+        return "poultryapp/api/carts/";
     }
   }
 
-  String pathWithPage(int page) {
-    switch (this) {
-      default:
-        return "";
-    }
-  }
+  // String pathWithPage(int page) {
+  //   switch (this) {
+  //     default: return "";
+  //   }
+  // }
 
-  String appendRemainingUrl(String remainingUrl) {
-    switch (this) {
-      case Endpoint.deleteUser:
-        return "${GlobalConstants.baseUrl}/$path$remainingUrl";
-      default:
-        return "";
-    }
-  }
+  // String appendRemainingUrl(String remainingUrl) {
+  //   switch (this) {
+  //     case Endpoint.deleteUser:
+  //       return "${GlobalConstants.baseUrl}/$path$remainingUrl";
+  //     default:
+  //       return "";
+  //   }
+  // }
 
   String get method {
     switch (this) {
@@ -223,6 +227,8 @@ extension EndpointExtension on Endpoint {
     switch (this) {
       case Endpoint.deleteUser:
       case Endpoint.poultryStatsSummary:
+      case Endpoint.addToCart:
+      case Endpoint.cartList:
         return true;
       default:
         return false;
@@ -235,12 +241,10 @@ extension EndpointExtension on Endpoint {
     var request = http.Request(method, url);
     request.headers['Content-Type'] = 'application/json';
     //  commented the token part
-    /*
-    if ((GlobalConstants.getUser()?.token ?? "") != "") {
+    if ((GlobalConstants.getUser()?.token ?? "") != "" &&  needsAuthorization) {
       request.headers['Authorization'] =
       'Token ${GlobalConstants.getUser()?.token ?? ""}';
     }
-    */
     if (method == "POST" || method == "PUT" || method == "PATCH") {
       // request.headers['Cookie'] = 'csrftoken=sRtN2uTkQ3fXPPPdUG56XYLkkytGkszYfwXcHYHjYlTuEKzsyNm4MgQydHt4PNZx; sessionid=iv7asvbuyljfxlwf8nrqvz35trcny99g';
       if (body != null) {

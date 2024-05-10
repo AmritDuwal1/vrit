@@ -434,6 +434,44 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
+// class LineChartWidget extends StatelessWidget {
+//   final List<FlSpot> dataSpots;
+//   final List<Color> colors;
+//   final FlTitlesData titlesData;
+//
+//   LineChartWidget({
+//     required this.dataSpots,
+//     required this.colors,
+//     required this.titlesData,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       height: 200,
+//       child: LineChart(
+//         LineChartData(
+//           titlesData: titlesData,
+//           borderData: FlBorderData(show: false),
+//           gridData: FlGridData(show: false),
+//           lineBarsData: [
+//             LineChartBarData(
+//               spots: dataSpots,
+//               isCurved: true,
+//               colors: colors,
+//               barWidth: 5,
+//               isStrokeCapRound: true,
+//               belowBarData: BarAreaData(show: false),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+
+
 class LineChartWidget extends StatelessWidget {
   final List<FlSpot> dataSpots;
   final List<Color> colors;
@@ -447,6 +485,17 @@ class LineChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (dataSpots.isEmpty) {
+      return Container(
+        height: 200,
+        alignment: Alignment.center,
+        child: Text(
+          'No data available',
+          style: TextStyle(fontSize: 16),
+        ),
+      );
+    }
+
     return Container(
       height: 200,
       child: LineChart(
@@ -469,6 +518,7 @@ class LineChartWidget extends StatelessWidget {
     );
   }
 }
+
 
 class TodayUpdateWidget extends StatelessWidget {
   final int totalHenDied;

@@ -16,8 +16,8 @@ class HomeViewModel extends ChangeNotifier {
 
     poultryStatsAPI.fetchPoultryStats(
           (response) {
-        last7DaysStats = response.results?.last7DaysStats;
-        todayStats = response.results?.todayStats;
+        last7DaysStats = response.data?.last7DaysStats;
+        todayStats = response.data?.todayStats;
         isLoading = false;
         notifyListeners();
       },

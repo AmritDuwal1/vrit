@@ -1,23 +1,18 @@
 
-import 'dart:async';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:poultry/api/endpoint.dart';
-
 class ArrayContainer<T> {
   final int? count;
   final String? next;
   final String? previous;
-  final List<T>? results;
+  final List<T>? data;
   final ErrorResponse? error;
   final String? detail;
-
 
   ArrayContainer({
     required this.count,
     this.next,
     this.previous,
-    this.results,
+    this.data,
     this.error,
     this.detail,
   });
@@ -28,7 +23,7 @@ class ArrayContainer<T> {
       next: json['next'],
       previous: json['previous'],
       // results: (json['results'] as List<dynamic>).map((e) => fromJsonT(e)).toList(),
-      results: (json['results'] as List<dynamic>?)?.map((e) => fromJsonT(e)).toList(), // Handle null results
+      data: (json['data'] as List<dynamic>?)?.map((e) => fromJsonT(e)).toList(), // Handle null results
       error: json['error'],
       detail: json['detail'],
     );
@@ -39,7 +34,7 @@ class SingleContainer<T> {
   final int? count;
   final String? next;
   final String? previous;
-  final T? results;
+  final T? data;
   final ErrorResponse? error;
   final String? detail;
 
@@ -47,7 +42,7 @@ class SingleContainer<T> {
     this.count,
     this.next,
     this.previous,
-    this.results,
+    this.data,
     this.error,
     this.detail,
   });
@@ -58,7 +53,7 @@ class SingleContainer<T> {
       next: json['next'],
       previous: json['previous'],
       // results: fromJsonT(json['results']), // Parse 'results' directly with fromJsonT
-      results: json.containsKey('results') ? fromJsonT(json['results']) : null, // Check if 'results' key exists before parsing
+      data: json.containsKey('data') ? fromJsonT(json['data']) : null, // Check if 'results' key exists before parsing
       error: json['error'] != null ? ErrorResponse.fromJson(json['error']) : null,
       detail: json['detail'],
     );

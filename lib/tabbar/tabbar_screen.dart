@@ -1,10 +1,6 @@
 
 import 'dart:async';
-
-import 'package:poultry/modules/home/home_screen.dart';
-import 'package:poultry/modules/order/order_screen.dart';
 import 'package:poultry/path_collection.dart';
-import 'package:poultry/profile/profile_screen.dart';
 
 class TabBarScreen extends StatefulWidget {
   const TabBarScreen({Key? key}) : super(key: key);
@@ -40,6 +36,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
 
   final List<Widget> _tabs = [
     const Tab1(),
+    CartTab(),
     const Tab2(),
     const Tab3(),
   ];
@@ -57,22 +54,36 @@ class _TabBarScreenState extends State<TabBarScreen> {
           });
         },
         selectedItemColor: const Color(0xFF3498DC),
+        unselectedItemColor: Colors.grey, // Customize the color of unselected items
+        unselectedLabelStyle: TextStyle(
+          fontSize: 16, // Set the font size for unselected labels
+          color: Colors.blueGrey, // Set the color for unselected labels
+        ),
+        selectedLabelStyle: TextStyle(
+          fontSize: 16, // Set the font size for unselected labels
+          color: Colors.blueGrey, // Set the color for unselected labels
+        ),
         items:  [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home, size: 24),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
+            icon: Icon(Icons.shopping_cart, size: 24),
+            label: 'Cart',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list, size: 24),
             label: 'Orders',
           ),
           // if (GlobalConstants.isLoggedIn == true)
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.person, size: 24),
             label: 'Profile',
           ),
         ],
       ),
+
     );
   }
 }
@@ -91,7 +102,7 @@ class Tab2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OrderScreen();
+    return RequestScreen();
   }
 }
 
@@ -103,5 +114,15 @@ class Tab3 extends StatelessWidget {
     return ProfileScreen(onLogout: () {
 
     });; // Placeholder for Tab3
+  }
+}
+
+
+class CartTab extends StatelessWidget {
+  const CartTab({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CartScreen(); // Placeholder for Tab3
   }
 }

@@ -10,10 +10,7 @@ class PoultryStatsAPI {
       final apiRequest = Endpoint.poultryStatsSummary.apiRequest({});
       var response = await  apiRequest.sendForSingleContainer<PoultryStatsResults>((json) => PoultryStatsResults.fromJson(json));
       print('API Request: ${apiRequest.request.method} ${apiRequest.request.url}');
-      // ArrayContainer<List<PoultryStats>> response =
-      // await apiRequest.send<List<PoultryStats>>((json) => [PoultryStats.fromJson(json)]);
-
-      if (response.results != null) {
+      if (response.data != null) {
         success(response); // Success callback
         return response; // Return the response
       } else {
@@ -27,5 +24,4 @@ class PoultryStatsAPI {
     }
   }
 
-// Add methods for adding and removing poultry stats if needed
 }

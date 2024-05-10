@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-class OrderScreen extends StatelessWidget {
+class RequestScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
