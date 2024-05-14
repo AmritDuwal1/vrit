@@ -36,7 +36,6 @@ class HomeViewModel extends ChangeNotifier {
     required int totalHenSold,
     double? todayEggPrice,
   }) async {
-    final String apiUrl = 'https://example.com/api/data';
     final Map<String, dynamic> data = {
       'total_hen_died': totalHenDied,
       'total_filled_crates': totalFilledCrates,

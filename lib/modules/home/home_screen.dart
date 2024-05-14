@@ -281,8 +281,9 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
+
 import 'package:poultry/model/poultry_stats_summary.dart';
-import 'package:poultry/modules/home/AddDataForm.dart';
+import 'package:poultry/modules/home/add_data_form.dart';
 import 'package:poultry/modules/home/home_view_model.dart';
 import 'package:poultry/path_collection.dart';
 import 'package:provider/provider.dart';
@@ -292,62 +293,83 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>  {
+  @override
+  HomeViewModel get viewModel => HomeViewModel();
+
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
       Provider.of<HomeViewModel>(context, listen: false).fetchData();
     });
+    // Future.delayed(const Duration(seconds: 5), () {
+    //   Provider.of<AlertManager>(context, listen: false).showAlert('This is an alert!');
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
-    HomeViewModel viewModel = Provider.of<HomeViewModel>(context);
+    // HomeViewModel viewModel = Provider.of<HomeViewModel>(context);
     var todayStats = viewModel.todayStats;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Home'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TodayUpdateWidget(
-              totalHenDied: todayStats?.numDeadHens ?? 0,
-              totalFilledCrates: todayStats?.totalFilledEggCrates ?? 0,
-              totalHenSold: todayStats?.numHensSold ?? 0,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  LineChartWidget(
-                    dataSpots: extractDataSpots(viewModel.last7DaysStats),
-                    colors: [Colors.blue],
-                    titlesData: buildTitlesData(viewModel.last7DaysStats),
-                  ),
-                  SizedBox(height: 16),
-                  buildSectionTitle('Number of Egg Crates 7 Days'),
-                  LineChartWidget(
-                    dataSpots: extractHensSoldDataSpots(viewModel.last7DaysStats),
-                    colors: [Colors.green],
-                    titlesData: buildTitlesData(viewModel.last7DaysStats),
-                  ),
-                  SizedBox(height: 16),
-                  buildSectionTitle('Hen Sold for the Last 7 Days'),
-                  LineChartWidget(
-                    dataSpots: extractHenDeathsDataSpots(viewModel.last7DaysStats),
-                    colors: [Colors.red],
-                    titlesData: buildTitlesData(viewModel.last7DaysStats),
-                  ),
-                  buildSectionTitle('Hen Deaths for the Last 7 Days'),
-                ],
+    return AlertListener(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Home'),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Consumer<HomeViewModel>(
+                builder: (context, viewModel, child) {
+                  if (viewModel.result != null) {
+                    Future.delayed(Duration.zero, () {
+                      // AlertManager.showAlert(context, viewModel.result!.message);
+                      showResultDialog(context, viewModel.result!, () {
+                        viewModel.result = null;
+                      });
+                    });
+                  }
+                  return Container();
+                },
               ),
-            ),
-          ],
+              TodayUpdateWidget(
+                totalHenDied: todayStats?.numDeadHens ?? 0,
+                totalFilledCrates: todayStats?.totalFilledEggCrates ?? 0,
+                totalHenSold: todayStats?.numHensSold ?? 0,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    LineChartWidget(
+                      dataSpots: extractDataSpots(viewModel.last7DaysStats),
+                      colors: [Colors.blue],
+                      titlesData: buildTitlesData(viewModel.last7DaysStats),
+                    ),
+                    SizedBox(height: 16),
+                    buildSectionTitle('Number of Egg Crates 7 Days'),
+                    LineChartWidget(
+                      dataSpots: extractHensSoldDataSpots(viewModel.last7DaysStats),
+                      colors: [Colors.green],
+                      titlesData: buildTitlesData(viewModel.last7DaysStats),
+                    ),
+                    SizedBox(height: 16),
+                    buildSectionTitle('Hen Sold for the Last 7 Days'),
+                    LineChartWidget(
+                      dataSpots: extractHenDeathsDataSpots(viewModel.last7DaysStats),
+                      colors: [Colors.red],
+                      titlesData: buildTitlesData(viewModel.last7DaysStats),
+                    ),
+                    buildSectionTitle('Hen Deaths for the Last 7 Days'),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

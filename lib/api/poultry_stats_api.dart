@@ -24,7 +24,7 @@ class PoultryStatsAPI {
     }
   }
 
-  Future<SingleContainer<PoultryStats>> postPoultryStats(
+  Future<void> postPoultryStats(
      int totalFilledEggCrates,
      int numDeadHens,
      int numHensSold,
@@ -44,15 +44,12 @@ class PoultryStatsAPI {
       print('API Request: ${apiRequest.request.method} ${apiRequest.request.url}');
       if (response.data != null) {
         success(response); // Success callback
-        return response; // Return the response
       } else {
         failure(FlutterError(response.error?.message  ?? 'Something Went Wrong!'));
-        throw FlutterError("Failed to fetch poultry stats");
       }
     } catch (e) {
       print('Error: $e');
       failure(FlutterError("$e")); // Failure callback
-      throw FlutterError("Failed to fetch poultry stats");
     }
   }
   }

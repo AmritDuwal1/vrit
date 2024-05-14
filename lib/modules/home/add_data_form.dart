@@ -94,8 +94,11 @@ class _AddDataFormState extends State<AddDataForm> {
                   todayEggPrice = double.parse(_eggPriceController.text);
                 }
                 // Perform action with the data, such as submitting it
-                _submitFormData();
+                if (totalHenDied != 0 && totalFilledCrates != 0 && totalHenSold != 0) {
+                  _submitFormData(context);
+                }
               }
+
             },
             child: Text('Submit'),
           ),

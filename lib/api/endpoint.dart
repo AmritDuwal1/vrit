@@ -74,16 +74,7 @@ class APIRequest<T> {
         responseBody = await response.stream.bytesToString();
       }
       print("responseBody: ${responseBody}");
-      // Check if the response body is empty
-      if (responseBody.isEmpty) {
-        print('Response body is empty');
-      } else {
-        print("Response Body: $responseBody");
-      }
-
       dynamic decodedBody = jsonDecode(responseBody);
-      // Print the decoded body
-      print('Decoded Body: $decodedBody');
       if (decodedBody != null) {
         SingleContainer<T> singleContainer =
         SingleContainer<T>.fromJson(decodedBody, fromJsonT);
@@ -196,7 +187,7 @@ extension EndpointExtension on Endpoint {
       case Endpoint.cartList:
         return "poultryapp/api/carts/";
       case Endpoint.dailyUpdate:
-        return "api/poultry-stats/";
+        return "poultryapp/api/poultry-stats/";
     }
   }
 
@@ -272,7 +263,6 @@ extension EndpointExtension on Endpoint {
 
     if (remainingUrl.isEmpty || !remainingUrl.isNotNull || remainingUrl == "null") {
       // remainingUrl is empty
-      print('remainingUrl is empty');
     } else {
       urlString = "$urlString$remainingUrl";
       print('remainingUrl is not empty');

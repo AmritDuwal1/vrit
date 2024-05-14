@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   final Widget homeScreen;
 
   // const MyApp({super.key});
-  const MyApp({Key? key, required this.homeScreen}) : super(key: key);
+   MyApp({Key? key, required this.homeScreen}) : super(key: key);
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -31,6 +31,30 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<HomeViewModel>(
           create: (context) => HomeViewModel(),
         ),
+        // ChangeNotifierProvider<BaseViewModel>(
+        //   create: (context) {
+        //     // Create the BaseViewModel instance
+        //     BaseViewModel viewModel = BaseViewModel();
+        //
+        //
+        //     // showResultDialog(context, viewModel.result!, () {
+        //     //   viewModel.result = null;
+        //     // });
+        //
+        //     // Add a listener to viewModel.result
+        //     viewModel.addListener(() {
+        //       // Check if viewModel.result is not null
+        //       if (viewModel.result != null) {
+        //         // Show the result dialog
+        //         showResultDialog(context, viewModel.result!, () {
+        //           viewModel.result = null;
+        //         });
+        //       }
+        //     });
+        //
+        //     return viewModel;
+        //   },
+        // ),
         ChangeNotifierProvider<ProfileViewModel>(
           create: (context) => ProfileViewModel(),
         ),
@@ -41,6 +65,9 @@ class MyApp extends StatelessWidget {
           create: (context) => CartViewModel(),
         ),
 
+        ChangeNotifierProvider<AlertManager>(
+          create: (context) => AlertManager(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
