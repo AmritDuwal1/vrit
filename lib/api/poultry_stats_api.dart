@@ -14,7 +14,7 @@ class PoultryStatsAPI {
         success(response); // Success callback
         return response; // Return the response
       } else {
-        failure(FlutterError(response.error?.message ?? response.detail ?? 'Something Went Wrong!'));
+        failure(FlutterError(response.error?.message ?? 'Something Went Wrong!'));
         throw FlutterError("Failed to fetch poultry stats");
       }
     } catch (e) {
@@ -24,4 +24,37 @@ class PoultryStatsAPI {
     }
   }
 
-}
+  Future<SingleContainer<PoultryStats>> postPoultryStats(
+     int totalFilledEggCrates,
+     int numDeadHens,
+     int numHensSold,
+    double? eggPrice,
+    Function(SingleContainer<PoultryStats>) success,
+    Function(FlutterError) failure,
+  ) async {
+    try {
+      final apiRequest = Endpoint.dailyUpdate.apiRequest({
+        "total_filled_egg_crates": totalFilledEggCrates.toString(),
+        "num_dead_hens": numDeadHens.toString(),
+        "num_hens_sold": numHensSold.toString(),
+        "egg_price": eggPrice?.toString() ?? "", // Convert to string or leave empty if null
+      });
+
+      var response = await  apiRequest.sendForSingleContainer<PoultryStats>((json) => PoultryStats.fromJson(json));
+      print('API Request: ${apiRequest.request.method} ${apiRequest.request.url}');
+      if (response.data != null) {
+        success(response); // Success callback
+        return response; // Return the response
+      } else {
+        failure(FlutterError(response.error?.message  ?? 'Something Went Wrong!'));
+        throw FlutterError("Failed to fetch poultry stats");
+      }
+    } catch (e) {
+      print('Error: $e');
+      failure(FlutterError("$e")); // Failure callback
+      throw FlutterError("Failed to fetch poultry stats");
+    }
+  }
+  }
+
+

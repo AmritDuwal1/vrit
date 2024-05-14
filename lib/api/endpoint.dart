@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:poultry/extensions/string_extension.dart';
 import 'package:poultry/helper/data_task.dart';
 import 'package:poultry/helper/global_constants.dart';
 
@@ -72,10 +73,7 @@ class APIRequest<T> {
       } else {
         responseBody = await response.stream.bytesToString();
       }
-
       print("responseBody: ${responseBody}");
-
-
       // Check if the response body is empty
       if (responseBody.isEmpty) {
         print('Response body is empty');
@@ -178,6 +176,7 @@ enum Endpoint {
   googleLogin,
   addToCart,
   cartList,
+  dailyUpdate,
 }
 
 extension EndpointExtension on Endpoint {
@@ -196,6 +195,8 @@ extension EndpointExtension on Endpoint {
       case Endpoint.addToCart:
       case Endpoint.cartList:
         return "poultryapp/api/carts/";
+      case Endpoint.dailyUpdate:
+        return "api/poultry-stats/";
     }
   }
 
@@ -217,6 +218,8 @@ extension EndpointExtension on Endpoint {
   String get method {
     switch (this) {
       case Endpoint.login:
+      case Endpoint.addToCart:
+      case Endpoint.dailyUpdate:
         return "POST";
       default:
         return "GET";
@@ -229,6 +232,7 @@ extension EndpointExtension on Endpoint {
       case Endpoint.poultryStatsSummary:
       case Endpoint.addToCart:
       case Endpoint.cartList:
+      case Endpoint.dailyUpdate:
         return true;
       default:
         return false;
@@ -259,10 +263,19 @@ extension EndpointExtension on Endpoint {
     String page = "?page=${params['page'] ?? 1}";
 
     String remainingUrl = "${params['remaining_url']}";
+
     // only for url changes
     switch (this) {
       default:
         urlString = "${GlobalConstants.baseUrl}/$path";
+    }
+
+    if (remainingUrl.isEmpty || !remainingUrl.isNotNull || remainingUrl == "null") {
+      // remainingUrl is empty
+      print('remainingUrl is empty');
+    } else {
+      urlString = "$urlString$remainingUrl";
+      print('remainingUrl is not empty');
     }
     return request(urlString, params);
   }

@@ -61,6 +61,7 @@ class User {
   String? address; // New field for storing address
   String? phoneNumber; // New field for storing phone number
   String? userType; // New field for storing user type
+  String? role;
 
   User({
     this.firstName,
@@ -74,6 +75,7 @@ class User {
     this.address, // Include address in constructor
     this.phoneNumber, // Include phoneNumber in constructor
     this.userType, // Include userType in constructor
+    this.role,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -89,6 +91,7 @@ class User {
       address: json['address'], // Assign address value from JSON
       phoneNumber: json['phone_number'], // Assign phoneNumber value from JSON
       userType: json['usertype'], // Assign userType value from JSON
+        role: json["role"],
     );
   }
 
@@ -105,6 +108,7 @@ class User {
       'address': address, // Include address in JSON
       'phone_number': phoneNumber, // Include phoneNumber in JSON
       'usertype': userType, // Include userType in JSON
+      "role": role,
     };
   }
 }

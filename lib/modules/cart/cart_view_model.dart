@@ -43,3 +43,45 @@
 //     notifyListeners();
 //   }
 // }
+
+
+import 'package:flutter/material.dart';
+import 'package:poultry/api/cart_api.dart';
+import 'package:poultry/model/cart_item.dart';
+import 'package:poultry/path_collection.dart';
+
+class CartViewModel extends ChangeNotifier {
+  final CartAPI cartAPI = CartAPI();
+  bool isLoading = false;
+  List<CartItem>? cartItems;
+  FlutterError? error;
+  int? currentPage;
+  CartItem? item;
+  Result? result;
+
+  Future<void> addItemToCart(CartItem item) async {
+    isLoading = true;
+    notifyListeners();
+    try {
+      await cartAPI.requestItem(
+        item,
+            (response) {
+          item = response;
+          isLoading = false;
+          result = Result.success(message: "Successfully Requested!, if its urgent you can call right away.");
+          notifyListeners();
+        },
+            (error) {
+          result = Result.error('Error: $error');
+          this.error = error;
+          isLoading = false;
+          notifyListeners();
+        },
+      );
+    } catch (e) {
+      error = FlutterError("$e");
+      isLoading = false;
+      notifyListeners();
+    }
+  }
+}

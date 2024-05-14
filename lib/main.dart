@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:poultry/helper/global_constants.dart';
+import 'package:poultry/modules/cart/cart_view_model.dart';
 import 'package:poultry/modules/home/home_view_model.dart';
 import 'package:poultry/modules/login//login_screen.dart';
+import 'package:poultry/modules/request/request_view_model.dart';
 import 'package:poultry/path_collection.dart';
 import 'package:poultry/profile/profile_view_model.dart';
 import 'package:poultry/tabbar/tabbar_screen.dart';
@@ -32,6 +34,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<ProfileViewModel>(
           create: (context) => ProfileViewModel(),
         ),
+        ChangeNotifierProvider<RequestViewModel>(
+          create: (context) => RequestViewModel(),
+        ),
+        ChangeNotifierProvider<CartViewModel>(
+          create: (context) => CartViewModel(),
+        ),
+
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

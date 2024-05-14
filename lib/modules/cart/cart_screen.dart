@@ -1,6 +1,12 @@
+
 import 'package:flutter/material.dart';
+import 'package:poultry/helper/show_result_dialog.dart';
+import 'package:poultry/model/cart_item.dart';
+import 'package:poultry/modules/cart/cart_view_model.dart';
+import 'package:provider/provider.dart';
 
 class CartScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,8 +42,20 @@ class _CartPageState extends State<CartPage> {
   int _numberOfCrates = 1;
   String _selectedEggType = 'Hen';
 
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      listenToViewModel();
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<CartViewModel>(context, listen: false);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -97,11 +115,33 @@ class _CartPageState extends State<CartPage> {
         SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
-            // Add to cart logic
+            viewModel.addItemToCart(
+              CartItem(
+                numberOfCrates: _numberOfCrates,
+                eggType: _selectedEggType,
+              ),
+            );
           },
           child: Text('Add to Cart'),
         ),
       ],
     );
   }
+
+  void listenToViewModel() {
+    Provider.of<CartViewModel>(context, listen: false).removeListener(listenerFunction);
+    Provider.of<CartViewModel>(context, listen: false).addListener(listenerFunction);
+  }
+
+  void listenerFunction() {
+   var viewModel = Provider.of<CartViewModel>(context, listen: false);
+    showResultDialog(context, viewModel.result!, () {
+      if (viewModel.result!.isSuccess) {
+        // Navigator.pop(context, true);
+
+      }
+      viewModel.result = null;
+    });
+  }
+
 }

@@ -1,67 +1,61 @@
 
 import 'package:http/http.dart' as http;
+import 'package:poultry/model/pagination.dart';
+
 class ArrayContainer<T> {
-  final int? count;
-  final String? next;
-  final String? previous;
+  // final int? count;
+  // final String? next;
+  // final String? previous;
   final List<T>? data;
   final ErrorResponse? error;
-  final String? detail;
+  // final String? detail;
+  final Pagination? pagination;
 
   ArrayContainer({
-    required this.count,
-    this.next,
-    this.previous,
+    // required this.count,
+    // this.next,
+    // this.previous,
     this.data,
     this.error,
-    this.detail,
+    this.pagination,
+    // this.detail,
   });
 
   factory ArrayContainer.fromJson(Map<String, dynamic> json, T Function(dynamic) fromJsonT) {
     return ArrayContainer<T>(
-      count: json['count'],
-      next: json['next'],
-      previous: json['previous'],
+      // count: json['count'],
+      // next: json['next'],
+      // previous: json['previous'],
       // results: (json['results'] as List<dynamic>).map((e) => fromJsonT(e)).toList(),
       data: (json['data'] as List<dynamic>?)?.map((e) => fromJsonT(e)).toList(), // Handle null results
-      error: json['error'],
-      detail: json['detail'],
+      // error: ErrorResponse.fromJson(json['error']),
+      error: json.containsKey('error') ? ErrorResponse.fromJson(json['error']) : null, // Check if 'error' key exists
+      // detail: json['detail'],
+      // pagination: Pagination.fromJson(json['pagination']),
+      pagination: json.containsKey('pagination') ? Pagination.fromJson(json['pagination']) : null,
     );
   }
 }
 
 class SingleContainer<T> {
-  final int? count;
-  final String? next;
-  final String? previous;
   final T? data;
   final ErrorResponse? error;
-  final String? detail;
 
   SingleContainer({
-    this.count,
-    this.next,
-    this.previous,
     this.data,
     this.error,
-    this.detail,
   });
 
   factory SingleContainer.fromJson(Map<String, dynamic> json, T Function(dynamic) fromJsonT) {
     return SingleContainer<T>(
-      count: json['count'],
-      next: json['next'],
-      previous: json['previous'],
-      // results: fromJsonT(json['results']), // Parse 'results' directly with fromJsonT
       data: json.containsKey('data') ? fromJsonT(json['data']) : null, // Check if 'results' key exists before parsing
       error: json['error'] != null ? ErrorResponse.fromJson(json['error']) : null,
-      detail: json['detail'],
     );
   }
 }
 
 class ErrorResponse {
-  final String message;
+  final String? message;
 
   ErrorResponse({required this.message});
 

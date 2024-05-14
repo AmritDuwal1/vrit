@@ -1,32 +1,6 @@
 import 'package:poultry/extensions/result.dart';
 import 'package:poultry/path_collection.dart';
 
-// void showResultDialog(BuildContext context, Result result, VoidCallback callback) {
-//   String title = result.isSuccess ? 'Success' : 'Error';
-//   String message = result.message ?? "Something Went Wrong!";
-//
-//   WidgetsBinding.instance.addPostFrameCallback((_) {
-//     showDialog(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return AlertDialog(
-//           title: Text(title),
-//           content: Text(message),
-//           actions: <Widget>[
-//             TextButton(
-//               onPressed: () {
-//                 Navigator.of(context).pop();
-//                 callback(); // Call the callback function provided
-//               },
-//               child: Text('OK'),
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   });
-// }
-
 void showResultDialog(
     BuildContext context,
     Result result,

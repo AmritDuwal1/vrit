@@ -2,16 +2,21 @@
 
 
 import 'package:poultry/path_collection.dart';
+import 'dart:convert';
 
 class CartAPI {
   Future<ArrayContainer<List<CartItem>>> fetchCartItems(
       int page,
-      Function(List<CartItem>) success,
+      Function(ArrayContainer<List<CartItem>>) success,
       Function(FlutterError) failure,
       ) async {
     try {
+      var remainingUrl = "?page=$page&items_per_page=10";
+      var body = {
+        "remaining_url": remainingUrl
+      };
       ArrayContainer<List<CartItem>> response = await APIRequest<List<CartItem>>(
-        request: Endpoint.cartList.apiRequest({'page': page}).request,
+        request: Endpoint.cartList.apiRequest(body).request,
         endpoint: Endpoint.cartList,
       ).send<List<CartItem>>((json) => [CartItem.fromJson(json)]);
 
@@ -21,10 +26,10 @@ class CartAPI {
       // );
 
       if (response.data != null) {
-        success(response.data!.expand((items) => items).toList()); // Success callback
+        success(response); // Success callback
         return response; // Return the response
       } else {
-        String errorMessage = response.error?.message ?? response.detail ?? "Something Went Wrong!";
+        String errorMessage = response.error?.message  ?? "Something Went Wrong!";
         failure(FlutterError(errorMessage));
         throw FlutterError(errorMessage);
       }
@@ -35,6 +40,38 @@ class CartAPI {
     }
   }
 
+  Future<void> requestItem(
+      CartItem item,
+      Function(CartItem) success,
+      Function(FlutterError) failure,
+      ) async {
+    try {
+      // Convert CartItem object to JSON
+      // var jsonItem = item.toJson();
+      final apiRequest = APIRequest<SingleContainer<User>>(
+        request: Endpoint.addToCart.apiRequest({
+          "number_of_crates": item.numberOfCrates ?? 1,
+          "egg_type": item.eggType ?? "hen"
+        }).request,
+        endpoint: Endpoint.login,
+      );
+      SingleContainer<CartItem> response = await apiRequest
+          .sendForSingleContainer<CartItem>((json) => CartItem.fromJson(json));
 
-// Add more API functions for removing items from the cart, getting the cart contents, etc.
+      if (response.data != null) {
+        success(response.data!); // Success callback
+        // return response; // Return the response
+      } else {
+        String errorMessage = response.error?.message  ?? "Something Went Wrong!";
+        failure(FlutterError(errorMessage));
+        throw FlutterError(errorMessage);
+      }
+
+    } catch (e) {
+      print('Error: $e');
+      failure(FlutterError("$e")); // Failure callback
+      throw FlutterError("Failed to add item to cart");
+    }
+  }
+
 }

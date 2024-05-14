@@ -9,6 +9,7 @@ class HomeViewModel extends ChangeNotifier {
   List<PoultryStats>? last7DaysStats;
   PoultryStats? todayStats;
   FlutterError? error;
+  Result? result;
 
   void fetchData() {
     isLoading = true;
@@ -28,6 +29,40 @@ class HomeViewModel extends ChangeNotifier {
       },
     );
   }
+
+  Future<void> submitFormData({
+    required int totalHenDied,
+    required int totalFilledCrates,
+    required int totalHenSold,
+    double? todayEggPrice,
+  }) async {
+    final String apiUrl = 'https://example.com/api/data';
+    final Map<String, dynamic> data = {
+      'total_hen_died': totalHenDied,
+      'total_filled_crates': totalFilledCrates,
+      'total_hen_sold': totalHenSold,
+      'today_egg_price': todayEggPrice,
+    };
+
+    poultryStatsAPI.postPoultryStats(
+       totalHenDied,
+      totalFilledCrates,
+      totalHenSold,
+      todayEggPrice,(response)  {
+        result = Result.success(message: 'Successfully Updated');
+        isLoading = false;
+        notifyListeners();
+      },
+          (error) {
+        this.error = error;
+        result = Result.error(error.message);
+        isLoading = false;
+        notifyListeners();
+      },
+    );
+
+  }
+
 
   void notify() {
     notifyListeners();

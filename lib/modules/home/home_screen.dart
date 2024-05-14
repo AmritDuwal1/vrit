@@ -282,6 +282,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import 'package:poultry/model/poultry_stats_summary.dart';
+import 'package:poultry/modules/home/AddDataForm.dart';
 import 'package:poultry/modules/home/home_view_model.dart';
 import 'package:poultry/path_collection.dart';
 import 'package:provider/provider.dart';
@@ -434,43 +435,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// class LineChartWidget extends StatelessWidget {
-//   final List<FlSpot> dataSpots;
-//   final List<Color> colors;
-//   final FlTitlesData titlesData;
-//
-//   LineChartWidget({
-//     required this.dataSpots,
-//     required this.colors,
-//     required this.titlesData,
-//   });
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       height: 200,
-//       child: LineChart(
-//         LineChartData(
-//           titlesData: titlesData,
-//           borderData: FlBorderData(show: false),
-//           gridData: FlGridData(show: false),
-//           lineBarsData: [
-//             LineChartBarData(
-//               spots: dataSpots,
-//               isCurved: true,
-//               colors: colors,
-//               barWidth: 5,
-//               isStrokeCapRound: true,
-//               belowBarData: BarAreaData(show: false),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
 
 class LineChartWidget extends StatelessWidget {
   final List<FlSpot> dataSpots;
@@ -519,7 +483,6 @@ class LineChartWidget extends StatelessWidget {
   }
 }
 
-
 class TodayUpdateWidget extends StatelessWidget {
   final int totalHenDied;
   final int totalFilledCrates;
@@ -548,9 +511,16 @@ class TodayUpdateWidget extends StatelessWidget {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 12),
-          buildUpdateRow('Total Number of Hen Died', totalHenDied.toString()),
-          buildUpdateRow('Total Number of Filled Crates', totalFilledCrates.toString()),
-          buildUpdateRow('Total Number of Hen Sold', totalHenSold.toString()),
+          if (totalHenDied == 0 && totalFilledCrates == 0 && totalHenSold == 0)
+            AddDataForm() // Show form to add data if no update information available
+          else
+            Column(
+              children: [
+                buildUpdateRow('Total Number of Hen Died', totalHenDied.toString()),
+                buildUpdateRow('Total Number of Filled Crates', totalFilledCrates.toString()),
+                buildUpdateRow('Total Number of Hen Sold', totalHenSold.toString()),
+              ],
+            ),
         ],
       ),
     );

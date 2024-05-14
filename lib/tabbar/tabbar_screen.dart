@@ -26,6 +26,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
     //     setState(() {}); // Update the UI
     //   });
     // });
+
   }
 
   @override
@@ -74,7 +75,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list, size: 24),
-            label: 'Orders',
+            label: 'Requests',
           ),
           // if (GlobalConstants.isLoggedIn == true)
           BottomNavigationBarItem(
@@ -113,7 +114,7 @@ class Tab3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProfileScreen(onLogout: () {
 
-    });; // Placeholder for Tab3
+    }); // Placeholder for Tab3
   }
 }
 
