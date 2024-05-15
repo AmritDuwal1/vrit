@@ -1,8 +1,5 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
-
-
-
 import 'package:poultry/path_collection.dart';
 import 'endpoint.dart';
 
@@ -114,9 +111,13 @@ class UserAPI {
     Function(FlutterError) failure,
   ) async {
     try {
+      var remainingUrl = "$userId/";
+      var body = {
+        "remaining_url": remainingUrl
+      };
       final apiRequest = APIRequest<SuccessResponse>(
         request:
-            Endpoint.deleteUser.apiRequest({'appendInUrl': '$userId/'}).request,
+            Endpoint.deleteUser.apiRequest(body).request,
         endpoint: Endpoint.deleteUser,
       );
       print(
@@ -180,6 +181,103 @@ class UserAPI {
     } catch (e) {
       print('Error: $e');
       failure(FlutterError("$e")); // Failure callback
+    }
+  }
+
+
+
+  Future<void> updateUser(
+      String? email,
+      String? firstName,
+      String? lastName,
+      String? userName,
+      String? phoneNumber,
+      String? imagePath,
+      Function(User) success,
+      Function(FlutterError) failure,
+      ) async {
+    try {
+      var request;
+
+      // Add request parameters
+      var requestParams = {
+        'email': email ?? '',
+        'first_name': firstName ?? '',
+        'last_name': lastName ?? '',
+        'username': userName ?? '',
+        'phone_number': phoneNumber ?? '',
+      };
+
+      if (imagePath != null) {
+        // Create a multipart request
+        request = http.MultipartRequest(
+          'PUT',
+          Uri.parse('${GlobalConstants.baseUrl}/poultryapp/api/profile/update/'),
+        );
+        request.headers.addAll({
+          'Authorization': 'Token ${GlobalConstants.getUser()?.token ?? ""}',
+          'Content-Type': 'application/json',
+          'Cookie':
+          'csrftoken=N355V1xEPuAor6lVfOO89TMl781aOiYkmL4jaJehVeUYBqm1JbPNVr6ln8V7ilgx; sessionid=ogyylqshoq4n48dzhz4b46ebu1jdbzxl',
+        });
+        // Convert the image file to a byte stream
+        List<int> imageBytes = await File(imagePath).readAsBytes();
+        // Convert the byte stream to a multipart file
+        var multipartFile = http.MultipartFile.fromBytes(
+          'image',
+          imageBytes,
+          filename: 'image.jpg', // Change the filename as needed
+          contentType:
+          MediaType('image', 'jpg'), // Change the content type as needed
+        );
+
+        request.files.add(multipartFile);
+      } else {
+        // Create a simple request
+        request = http.Request(
+          'PUT',
+          Uri.parse('${GlobalConstants.baseUrl}/poultryapp/api/profile/update/'),
+        );
+
+        // Set the request body with request parameters
+        (request as http.Request).body = jsonEncode(requestParams);
+        // Set the request headers
+        request.headers.addAll({
+          'Content-Type': 'application/json',
+          'Authorization': 'Token ${GlobalConstants.getUser()?.token ?? ""}',
+          'Cookie':
+          'csrftoken=N355V1xEPuAor6lVfOO89TMl781aOiYkmL4jaJehVeUYBqm1JbPNVr6ln8V7ilgx; sessionid=ogyylqshoq4n48dzhz4b46ebu1jdbzxl',
+        });
+      }
+
+      // Send the request and await the response
+      var response = await request.send();
+
+      print(response);
+      // Read the response stream
+      String responseBody = await response.stream.bytesToString();
+
+      // Decode the response body
+      dynamic decodedBody = jsonDecode(responseBody);
+      print(decodedBody);
+
+      // Handle the decoded response
+      if (decodedBody != null) {
+        SingleContainer<User> singleContainer = SingleContainer<User>.fromJson(
+            decodedBody, (json) => User.fromJson(json));
+        if (singleContainer.data != null) {
+          success(singleContainer.data!);
+        } else {
+          String errorMessage = singleContainer.error?.message ??
+              "Something Went Wrong!";
+          failure(FlutterError(errorMessage));
+        }
+      } else {
+        throw Exception('Decoded body is null');
+      }
+    } catch (e) {
+      print('Error: $e');
+      failure(FlutterError("$e"));
     }
   }
 

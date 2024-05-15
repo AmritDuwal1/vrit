@@ -9,7 +9,8 @@ class ProfileViewModel extends ChangeNotifier {
 
   // Method to fetch user details
   void fetchUserDetails() {
-    isLoading = true; // Set loading flag to true
+    // isLoading = true; // Set loading flag to true
+    user = GlobalConstants.getUser();
     notifyListeners(); // Notify listeners to update the UI
 
     // Call the API method to fetch user details

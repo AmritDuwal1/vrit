@@ -13,19 +13,20 @@ class _TabBarScreenState extends State<TabBarScreen> {
   late int _currentIndex;
   // late ProfileScreen _profileScreen;
   late StreamSubscription<bool> _loginStatusSubscription;
+  late ProfileScreen _profileScreen;
 
   @override
   void initState() {
     super.initState();
     _currentIndex = 0;
-    // _profileScreen = ProfileScreen(onLogout: () {
-    //   setState(() {
-    //     _currentIndex = 0;
-    //   });
-    //   _loginStatusSubscription = GlobalConstants.loginStatusStream.listen((loggedIn) {
-    //     setState(() {}); // Update the UI
-    //   });
-    // });
+    _profileScreen = ProfileScreen(onLogout: () {
+      // setState(() {
+      //   _currentIndex = 0;
+      // });
+      _loginStatusSubscription = GlobalConstants.loginStatusStream.listen((loggedIn) {
+        setState(() {}); // Update the UI
+      });
+    });
 
   }
 
@@ -46,7 +47,8 @@ class _TabBarScreenState extends State<TabBarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       // body: _currentIndex == 2 ? _profileScreen : _tabs[_currentIndex],
-      body:  _tabs[_currentIndex],
+      body: _currentIndex == 3 ? _profileScreen : _tabs[_currentIndex],
+      // _tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (index) {

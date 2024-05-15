@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:poultry/helper/alert_manager.dart';
 import 'package:poultry/helper/global_constants.dart';
 import 'package:poultry/modules/cart/cart_view_model.dart';
+import 'package:poultry/modules/edit_profile/edit_profile_view_model.dart';
 import 'package:poultry/modules/home/home_view_model.dart';
 import 'package:poultry/modules/login//login_screen.dart';
 import 'package:poultry/modules/request/request_view_model.dart';
@@ -68,6 +70,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<AlertManager>(
           create: (context) => AlertManager(),
         ),
+        ChangeNotifierProvider<EditProfileViewModel>(
+          create: (context) => EditProfileViewModel(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -75,7 +80,14 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: homeScreen,
+        // home: homeScreen,
+        home:  StreamBuilder<bool>(
+          stream: GlobalConstants.loginStatusStream,
+          builder: (context, snapshot) {
+              bool isLoggedIn = snapshot.data ?? false;
+              return isLoggedIn ? TabBarScreen() : LoginScreen();
+          },
+        ),
       ),
     );
   }

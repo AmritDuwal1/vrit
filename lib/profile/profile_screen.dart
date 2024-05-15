@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:poultry/modules/edit_profile/edit_profile.dart';
 
 
 import 'package:poultry/modules/login/login_screen.dart';
@@ -258,14 +259,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   );
                 } else {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //       builder: (context) => EditProfileScreen(
-                  //           user: Provider.of<ProfileViewModel>(context,
-                  //                   listen: false)
-                  //               .user)), // Navigate to EditProfileScreen
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => EditProfileScreen(
+                            user: GlobalConstants.getUser())), // Navigate to EditProfileScreen
+                  );
                 }
               }
             },

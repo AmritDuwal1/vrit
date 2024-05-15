@@ -36,19 +36,20 @@ class HomeViewModel extends ChangeNotifier {
     required int totalHenSold,
     double? todayEggPrice,
   }) async {
-    final Map<String, dynamic> data = {
-      'total_hen_died': totalHenDied,
-      'total_filled_crates': totalFilledCrates,
-      'total_hen_sold': totalHenSold,
-      'today_egg_price': todayEggPrice,
-    };
+    // final Map<String, dynamic> data = {
+    //   'total_hen_died': totalHenDied,
+    //   'total_filled_crates': totalFilledCrates,
+    //   'total_hen_sold': totalHenSold,
+    //   'today_egg_price': todayEggPrice,
+    // };
 
     poultryStatsAPI.postPoultryStats(
-       totalHenDied,
       totalFilledCrates,
+       totalHenDied,
       totalHenSold,
       todayEggPrice,(response)  {
         result = Result.success(message: 'Successfully Updated');
+        fetchData();
         isLoading = false;
         notifyListeners();
       },

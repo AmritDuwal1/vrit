@@ -40,6 +40,21 @@ class PoultryStatsResults {
   }
 }
 
+// class PoultryStats {
+//   late final int? totalFilledEggCrates;
+//   late final int? numDeadHens;
+//   late final int? numHensSold;
+//   late final String? createdAt;
+//
+//   PoultryStats.fromJson(Map<String, dynamic> json) {
+//     totalFilledEggCrates = json['total_filled_egg_crates'];
+//     numDeadHens = json['num_dead_hens'];
+//     numHensSold = json['num_hens_sold'];
+//     createdAt = json['created_at'];
+//   }
+// }
+
+
 class PoultryStats {
   late final int? totalFilledEggCrates;
   late final int? numDeadHens;
@@ -47,9 +62,15 @@ class PoultryStats {
   late final String? createdAt;
 
   PoultryStats.fromJson(Map<String, dynamic> json) {
-    totalFilledEggCrates = json['total_filled_egg_crates'];
-    numDeadHens = json['num_dead_hens'];
-    numHensSold = json['num_hens_sold'];
+    totalFilledEggCrates = json['total_filled_egg_crates'] != null
+        ? int.tryParse(json['total_filled_egg_crates'].toString())
+        : null;
+    numDeadHens = json['num_dead_hens'] != null
+        ? int.tryParse(json['num_dead_hens'].toString())
+        : null;
+    numHensSold = json['num_hens_sold'] != null
+        ? int.tryParse(json['num_hens_sold'].toString())
+        : null;
     createdAt = json['created_at'];
   }
 }

@@ -180,7 +180,7 @@ extension EndpointExtension on Endpoint {
       case Endpoint.poultryStatsSummary:
         return "poultryapp/api/poultry-stats-summary/";
       case Endpoint.deleteUser:
-        return "api/delete-user/";
+        return "poultryapp/api/delete-user/";
       case Endpoint.googleLogin:
         return "api/rest-auth/google/";
       case Endpoint.addToCart:
@@ -191,20 +191,6 @@ extension EndpointExtension on Endpoint {
     }
   }
 
-  // String pathWithPage(int page) {
-  //   switch (this) {
-  //     default: return "";
-  //   }
-  // }
-
-  // String appendRemainingUrl(String remainingUrl) {
-  //   switch (this) {
-  //     case Endpoint.deleteUser:
-  //       return "${GlobalConstants.baseUrl}/$path$remainingUrl";
-  //     default:
-  //       return "";
-  //   }
-  // }
 
   String get method {
     switch (this) {
@@ -212,6 +198,8 @@ extension EndpointExtension on Endpoint {
       case Endpoint.addToCart:
       case Endpoint.dailyUpdate:
         return "POST";
+      case Endpoint.deleteUser:
+        return "DELETE";
       default:
         return "GET";
     }
