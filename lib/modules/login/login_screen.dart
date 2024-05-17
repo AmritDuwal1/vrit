@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             const Center(
               child: Text(
-                "Poultry",
+                "Duwal Poultry",
                 style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
               ),
             ),

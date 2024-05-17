@@ -9,15 +9,65 @@ import 'package:poultry/modules/request/request_view_model.dart';
 import 'package:poultry/path_collection.dart';
 import 'package:poultry/profile/profile_view_model.dart';
 import 'package:poultry/tabbar/tabbar_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+
+import 'api/firebase_api.dart';
+import 'helper/flutter_localNotification_plugin.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GlobalConstants.initSharedPreferences(); // Initialize SharedPreferences
   User? user = GlobalConstants.getUser(); // Retrieve user from SharedPreferences
+
+  await Firebase.initializeApp();
+  await FirebaseApi.initNotifications();
+  String? token;
+  try {
+    token = await FirebaseMessaging.instance.getToken();
+  } catch (e) {
+    print('Failed to get FCM token: $e');
+  }
+
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true, // Required to display a heads up notification
+    badge: true,
+    sound: true,
+  );
+  FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    badge: true,
+    provisional: false,
+    sound: true,
+  );
+
+
+
+  // Handle incoming messages
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    showNotification(message);
+  });
+
+
   Widget homeScreen = user != null ? TabBarScreen() : LoginScreen(); // Determine the home screen based on user login status
 
-  // runApp(const MyApp());
-  runApp(MyApp(homeScreen: homeScreen));
+
+
+  GlobalConstants.initSharedPreferences().then((_) {
+    if (token != null) {
+      GlobalConstants.saveFirebaseToken(token);
+    }
+    initializeDateFormatting('ne_NP').then((_) {
+      // runApp(MyApp());
+      // runApp(const MyApp());
+      runApp(MyApp(homeScreen: homeScreen));
+    });
+
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -166,3 +216,33 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+
+void showNotification(RemoteMessage message) async {
+  try {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    AndroidNotificationDetails(
+      'channel_ID',
+      'channel name',
+      channelDescription: 'channel description',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+    const DarwinNotificationDetails iOSPlatformChannelSpecifics =
+    DarwinNotificationDetails();
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      message.notification?.title ?? 'Default Title',
+      message.notification?.body ?? 'Default Body',
+      platformChannelSpecifics,
+    );
+  } catch (e) {
+    print('Error showing notification: $e');
+  }
+}
+

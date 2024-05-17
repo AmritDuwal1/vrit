@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyDPFpLz1i-b3o8yzgVNEIeHF1s6q9rt4_0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>518577570741</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.AmritDuwal.poultry</string>
+	<key>PROJECT_ID</key>
+	<string>duwal-poultry</string>
+	<key>STORAGE_BUCKET</key>
+	<string>duwal-poultry.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:518577570741:ios:c4f9710dee2f9c72ea0ffc</string>
+</dict>
+</plist>

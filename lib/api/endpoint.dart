@@ -197,6 +197,7 @@ extension EndpointExtension on Endpoint {
       case Endpoint.login:
       case Endpoint.addToCart:
       case Endpoint.dailyUpdate:
+      case Endpoint.googleLogin:
         return "POST";
       case Endpoint.deleteUser:
         return "DELETE";

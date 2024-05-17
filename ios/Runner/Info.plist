@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Poultry</string>
+	<string>Duwal Poultry</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>poultry</string>
+	<string>Duwal Poultry</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -45,5 +45,21 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>CFBundleURLTypes</key>
+    <array>
+      <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+          <string>com.googleusercontent.apps.518577570741-bpluq7mem44kgldp80s970e8ika5uju9</string>
+        </array>
+      </dict>
+    </array>
+    <key>GIDClientID</key>
+    <string>518577570741-bpluq7mem44kgldp80s970e8ika5uju9.apps.googleusercontent.com</string>
+    <key>NSAppleIDUsageDescription</key>
+    <string>We use your Apple ID to authenticate and create an account.</string>
+
 </dict>
 </plist>
