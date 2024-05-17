@@ -1,12 +1,4 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:poultry/api/user_api.dart';
-
-
 import 'package:poultry/path_collection.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginViewModel extends ChangeNotifier {
   final UserAPI userApi = UserAPI();
@@ -85,7 +77,6 @@ class LoginViewModel extends ChangeNotifier {
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       final String idToken = googleAuth.idToken ?? '';
 
-
       // Access user's profile information
       final String firstName = googleUser.displayName?.split(' ')[0] ?? '';
       final String lastName = googleUser.displayName?.split(' ')[1] ?? '';
@@ -102,18 +93,14 @@ class LoginViewModel extends ChangeNotifier {
       Future.delayed(Duration(seconds: 0), () {
         socialLogin(idToken, true, null);
       });
-
     } catch (error) {
       print('Error logging in with Google: $error');
       isLoading = false;
       _isLoggedIn = false;
       result = Result.error(error.toString());
     }
-
     notifyListeners();
   }
-
-
 
   void socialLogin(String token, bool isGoogleLogin, AuthorizationCredentialAppleID? credential) {
     isLoading = true;
@@ -152,7 +139,6 @@ class LoginViewModel extends ChangeNotifier {
           AppleIDAuthorizationScopes.fullName,
         ],
       );
-
 
       print("credential $credential");
       Future.delayed(Duration(seconds: 2), () {

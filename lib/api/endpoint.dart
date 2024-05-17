@@ -182,7 +182,7 @@ extension EndpointExtension on Endpoint {
       case Endpoint.deleteUser:
         return "poultryapp/api/delete-user/";
       case Endpoint.googleLogin:
-        return "api/rest-auth/google/";
+        return "poultryapp/api/rest-auth/google/";
       case Endpoint.addToCart:
       case Endpoint.cartList:
         return "poultryapp/api/carts/";
