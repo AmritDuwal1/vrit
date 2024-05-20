@@ -14,11 +14,13 @@ class _TabBarScreenState extends State<TabBarScreen> {
   // late ProfileScreen _profileScreen;
   late StreamSubscription<bool> _loginStatusSubscription;
   late ProfileScreen _profileScreen;
+  late int profileIndex;
 
   @override
   void initState() {
     super.initState();
     _currentIndex = 0;
+     profileIndex = (GlobalConstants.getUser()?.role == "admin") ? 2: 3;
     _profileScreen = ProfileScreen(onLogout: () {
       // setState(() {
       //   _currentIndex = 0;
@@ -37,7 +39,8 @@ class _TabBarScreenState extends State<TabBarScreen> {
   }
 
   final List<Widget> _tabs = [
-    const Tab1(),
+    if (GlobalConstants.getUser()?.role == "admin")
+    Tab1(),
     CartTab(),
     const Tab2(),
     const Tab3(),
@@ -47,7 +50,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       // body: _currentIndex == 2 ? _profileScreen : _tabs[_currentIndex],
-      body: _currentIndex == 3 ? _profileScreen : _tabs[_currentIndex],
+      body: _currentIndex == profileIndex ? _profileScreen : _tabs[_currentIndex],
       // _tabs[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -67,6 +70,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
           color: Colors.blueGrey, // Set the color for unselected labels
         ),
         items:  [
+          if (GlobalConstants.getUser()?.role == "admin")
           BottomNavigationBarItem(
             icon: Icon(Icons.home, size: 24),
             label: 'Home',

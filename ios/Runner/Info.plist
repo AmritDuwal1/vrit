@@ -45,21 +45,26 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-    <key>CFBundleURLTypes</key>
-    <array>
-      <dict>
-        <key>CFBundleTypeRole</key>
-        <string>Editor</string>
-        <key>CFBundleURLSchemes</key>
-        <array>
-          <string>com.googleusercontent.apps.518577570741-bpluq7mem44kgldp80s970e8ika5uju9</string>
-        </array>
-      </dict>
-    </array>
-    <key>GIDClientID</key>
-    <string>518577570741-bpluq7mem44kgldp80s970e8ika5uju9.apps.googleusercontent.com</string>
-    <key>NSAppleIDUsageDescription</key>
-    <string>We use your Apple ID to authenticate and create an account.</string>
-
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.518577570741-bpluq7mem44kgldp80s970e8ika5uju9</string>
+			</array>
+		</dict>
+	</array>
+	<key>GIDClientID</key>
+	<string>518577570741-bpluq7mem44kgldp80s970e8ika5uju9.apps.googleusercontent.com</string>
+	<key>NSAppleIDUsageDescription</key>
+	<string>We use your Apple ID to authenticate and create an account.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photo library to enable you to upload photos for your profile picture.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>To capture and save photos within the app, please grant access to your photo library. This allows us to seamlessly store and manage the photos you capture during your experience.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 </dict>
 </plist>

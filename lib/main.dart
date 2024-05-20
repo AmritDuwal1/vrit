@@ -29,6 +29,7 @@ Future<void> main() async {
   String? token;
   try {
     token = await FirebaseMessaging.instance.getToken();
+    print("token: $token");
   } catch (e) {
     print('Failed to get FCM token: $e');
   }
@@ -54,8 +55,6 @@ Future<void> main() async {
 
 
   Widget homeScreen = user != null ? TabBarScreen() : LoginScreen(); // Determine the home screen based on user login status
-
-
 
   GlobalConstants.initSharedPreferences().then((_) {
     if (token != null) {
@@ -125,11 +124,12 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Duwal Poultry',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
+        debugShowCheckedModeBanner: false,
         // home: homeScreen,
         home:  StreamBuilder<bool>(
           stream: GlobalConstants.loginStatusStream,

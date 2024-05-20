@@ -18,8 +18,8 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     viewModel = LoginViewModel();
     listenToViewModel();
-    usernameController.text = "testuser";
-    passwordController.text = "Admin@123";
+    usernameController.text = "";
+    passwordController.text = "";
   }
 
   @override
