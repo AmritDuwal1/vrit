@@ -133,6 +133,57 @@ class RequestList extends StatelessWidget {
 }
 
 
+// class RequestItem extends StatelessWidget {
+//   final String orderNumber;
+//   final String status;
+//   final String date;
+//   final int numberOfCrates;
+//   final String customerName;
+//   final String customerNumber;
+//   final String customerImage;
+//
+//   const RequestItem({
+//     required this.orderNumber,
+//     required this.status,
+//     required this.date,
+//     required this.numberOfCrates,
+//     required this.customerName,
+//     required this.customerNumber,
+//     required this.customerImage,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Card(
+//       elevation: 2,
+//       margin: EdgeInsets.symmetric(vertical: 8),
+//       child: ListTile(
+//         title: Text(orderNumber),
+//         subtitle: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Text('Status: $status'),
+//             Text('Date: ${date.formatDateString()}'),
+//             Text('Number of Crates: $numberOfCrates'),
+//             if (GlobalConstants.getUser()?.role == "owner")
+//               Text('Customer: $customerName'),
+//             Text('Contact: $customerNumber'),
+//           ],
+//         ),
+//         // leading: CircleAvatar(
+//         //   backgroundImage: NetworkImage(customerImage),
+//         // ),
+//         trailing: IconButton(
+//           icon: Icon(Icons.info),
+//           onPressed: () {
+//           },
+//         ),
+//       ),
+//     );
+//   }
+//
+// }
+
 class RequestItem extends StatelessWidget {
   final String orderNumber;
   final String status;
@@ -170,16 +221,54 @@ class RequestItem extends StatelessWidget {
             Text('Contact: $customerNumber'),
           ],
         ),
-        // leading: CircleAvatar(
-        //   backgroundImage: NetworkImage(customerImage),
-        // ),
-        trailing: IconButton(
+        trailing: GlobalConstants.getUser()?.role == "owner"
+            ? IconButton(
           icon: Icon(Icons.info),
           onPressed: () {
+            // Show dialog for updating status
+            _showUpdateStatusDialog(context);
           },
-        ),
+        )
+            : null,
       ),
     );
   }
 
+  void _showUpdateStatusDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Update Status'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ListTile(
+                title: Text('Pending'),
+                onTap: () {
+                  Navigator.pop(context); // Close dialog
+                  // Handle status update for Pending
+                },
+              ),
+              ListTile(
+                title: Text('Approved'),
+                onTap: () {
+                  Navigator.pop(context); // Close dialog
+                  // Handle status update for Approved
+                },
+              ),
+              ListTile(
+                title: Text('Rejected'),
+                onTap: () {
+                  Navigator.pop(context); // Close dialog
+                  // Handle status update for Rejected
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }

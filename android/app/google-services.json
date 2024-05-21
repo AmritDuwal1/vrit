@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "518577570741",
+    "project_id": "duwal-poultry",
+    "storage_bucket": "duwal-poultry.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:518577570741:android:4c9d3d0d1139636cea0ffc",
+        "android_client_info": {
+          "package_name": "com.example.poultry"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "518577570741-d1dlvt4o93svhr5rhimug22tr4nrl8t2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvZ57Ge6LYQH-W1koerd8TcMZxoMaKnqA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "518577570741-d1dlvt4o93svhr5rhimug22tr4nrl8t2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "518577570741-a12b5s82orkf5qsrn1sbk2s32jhcoi1q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.AmritDuwal.poultry",
+                "app_store_id": "6502893293"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

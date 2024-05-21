@@ -20,7 +20,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
   void initState() {
     super.initState();
     _currentIndex = 0;
-     profileIndex = (GlobalConstants.getUser()?.role == "admin") ? 2: 3;
+     profileIndex = (GlobalConstants.getUser()?.role == "admin") ? 3: 2;
     _profileScreen = ProfileScreen(onLogout: () {
       // setState(() {
       //   _currentIndex = 0;
