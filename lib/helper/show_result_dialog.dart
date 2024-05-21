@@ -41,33 +41,3 @@ void showResultDialog(
     );
   });
 }
-
-
-
-
-// class AlertManager {
-//   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-//
-//   static void showAlert(String message) {
-//     final context = navigatorKey.currentState?.overlay?.context;
-//     if (context != null) {
-//       showDialog(
-//         context: context,
-//         builder: (BuildContext context) {
-//           return AlertDialog(
-//             title: Text("Alert"),
-//             content: Text(message),
-//             actions: <Widget>[
-//               TextButton(
-//                 child: Text("OK"),
-//                 onPressed: () {
-//                   Navigator.of(context).pop();
-//                 },
-//               ),
-//             ],
-//           );
-//         },
-//       );
-//     }
-//   }
-// }

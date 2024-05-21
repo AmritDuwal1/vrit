@@ -192,22 +192,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // void listen() {
-  //   ProfileViewModel viewModel = Provider.of<ProfileViewModel>(context, listen: false);
-  //   viewModel.addListener(() {
-  //     if (viewModel.result != null) {
-  //       showResultDialog(context, viewModel.result!, () {
-  //         if (viewModel.result!.isSuccess) {
-  //           GlobalConstants.removeUser(); // Clear user data
-  //           widget.onLogout();
-  //           Navigator.of(context).pop();
-  //         }
-  //         viewModel.result = null;
-  //       });
-  //     }
-  //   });
-  //
-  // }
 
 
   void listen() {

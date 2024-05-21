@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:poultry/helper/alert_manager.dart';
 import 'package:poultry/helper/global_constants.dart';
 import 'package:poultry/modules/cart/cart_view_model.dart';
+import 'package:poultry/modules/edit_profile/edit_profile.dart';
 import 'package:poultry/modules/edit_profile/edit_profile_view_model.dart';
 import 'package:poultry/modules/home/home_view_model.dart';
 import 'package:poultry/modules/login//login_screen.dart';
@@ -115,12 +116,62 @@ void main() async {
 }
 
 
+// class MyApp extends StatelessWidget {
+//   final Widget homeScreen;
+//
+//   // const MyApp({super.key});
+//    MyApp({Key? key, required this.homeScreen}) : super(key: key);
+//   // This widget is the root of your application.
+//   @override
+//   Widget build(BuildContext context) {
+//     return MultiProvider(
+//       providers: [
+//         ChangeNotifierProvider<HomeViewModel>(
+//           create: (context) => HomeViewModel(),
+//         ),
+//         ChangeNotifierProvider<ProfileViewModel>(
+//           create: (context) => ProfileViewModel(),
+//         ),
+//         ChangeNotifierProvider<RequestViewModel>(
+//           create: (context) => RequestViewModel(),
+//         ),
+//         ChangeNotifierProvider<CartViewModel>(
+//           create: (context) => CartViewModel(),
+//         ),
+//
+//         ChangeNotifierProvider<AlertManager>(
+//           create: (context) => AlertManager(),
+//         ),
+//         ChangeNotifierProvider<EditProfileViewModel>(
+//           create: (context) => EditProfileViewModel(),
+//         ),
+//       ],
+//       child: MaterialApp(
+//         title: 'Duwal Poultry',
+//         theme: ThemeData(
+//           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+//           useMaterial3: true,
+//         ),
+//         debugShowCheckedModeBanner: false,
+//         // home: homeScreen,
+//         home:  StreamBuilder<bool>(
+//           stream: GlobalConstants.loginStatusStream,
+//           initialData: GlobalConstants.isLoggedIn,
+//           builder: (context, snapshot) {
+//               bool isLoggedIn = snapshot.data ?? false;
+//               return isLoggedIn ? TabBarScreen() : LoginScreen();
+//           },
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 class MyApp extends StatelessWidget {
   final Widget homeScreen;
 
-  // const MyApp({super.key});
-   MyApp({Key? key, required this.homeScreen}) : super(key: key);
-  // This widget is the root of your application.
+  const MyApp({Key? key, required this.homeScreen}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -137,7 +188,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<CartViewModel>(
           create: (context) => CartViewModel(),
         ),
-
         ChangeNotifierProvider<AlertManager>(
           create: (context) => AlertManager(),
         ),
@@ -152,19 +202,28 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        // home: homeScreen,
-        home:  StreamBuilder<bool>(
-          stream: GlobalConstants.loginStatusStream,
-          initialData: GlobalConstants.isLoggedIn,
-          builder: (context, snapshot) {
+        initialRoute: '/',
+        routes: {
+          '/': (context) => StreamBuilder<bool>(
+            stream: GlobalConstants.loginStatusStream,
+            initialData: GlobalConstants.isLoggedIn,
+            builder: (context, snapshot) {
               bool isLoggedIn = snapshot.data ?? false;
               return isLoggedIn ? TabBarScreen() : LoginScreen();
-          },
-        ),
+            },
+          ),
+          '/edit-profile': (context) => EditProfileScreen(user: GlobalConstants.getUser()), // Example route for editing profile
+          // Add more routes as needed
+        },
+        onGenerateRoute: (settings) {
+          // Handle unknown routes if needed
+          return MaterialPageRoute(builder: (context) => NotFoundScreen());
+        },
       ),
     );
   }
 }
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -269,3 +328,18 @@ void showNotification(RemoteMessage message) async {
   }
 }
 
+
+
+class NotFoundScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Not Found'),
+      ),
+      body: Center(
+        child: Text('Page not found'),
+      ),
+    );
+  }
+}

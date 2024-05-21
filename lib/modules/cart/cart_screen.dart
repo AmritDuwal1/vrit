@@ -1,9 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:poultry/extensions/string_extension.dart';
+import 'package:poultry/helper/global_constants.dart';
 import 'package:poultry/helper/show_result_dialog.dart';
 import 'package:poultry/model/cart_item.dart';
 import 'package:poultry/modules/cart/cart_view_model.dart';
 import 'package:provider/provider.dart';
+import 'package:poultry/path_collection.dart';
 
 class CartScreen extends StatelessWidget {
 
@@ -115,6 +118,10 @@ class _CartPageState extends State<CartPage> {
         SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
+            if (!(GlobalConstants.getUser()?.phoneNumber?.isValidNepaliPhoneNumber ?? false)) {
+            Navigator.pushNamed(context, '/edit-profile');
+            return;
+            }
             viewModel.addItemToCart(
               CartItem(
                 numberOfCrates: _numberOfCrates,

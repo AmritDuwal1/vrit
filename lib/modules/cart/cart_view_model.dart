@@ -68,7 +68,7 @@ class CartViewModel extends ChangeNotifier {
             (response) {
           item = response;
           isLoading = false;
-          result = Result.success(message: "Successfully Requested!, if its urgent you can call right away.");
+          result = Result.success(message: "Successfully Requested!, if its urgent you make call right away.");
           notifyListeners();
         },
             (error) {

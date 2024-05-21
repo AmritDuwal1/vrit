@@ -72,7 +72,7 @@ class _RequestScreenState extends State<RequestScreen> {
                     return EmptyDataMessage(message: 'No orders found.');
                   } else {
                     // Show list when data is loaded
-                    return RequestList(cartItems: model.cartItems!, scrollController: _scrollController);
+                    return RequestList(cartItems: model.cartItems!, scrollController: _scrollController, context: context,);
                   }
                 },
               ),
@@ -106,10 +106,12 @@ class _RequestScreenState extends State<RequestScreen> {
 class RequestList extends StatelessWidget {
   final List<CartItem> cartItems;
   final ScrollController scrollController;
+  final BuildContext context; // Add context parameter
 
   const RequestList({
     required this.cartItems,
     required this.scrollController,
+    required this.context, // Accept context parameter
   });
 
   @override
@@ -135,99 +137,14 @@ class RequestList extends StatelessWidget {
               itemId: cartItem.id ?? 0,
             );
           },
+          context: context, // Pass context to RequestItem
         );
       },
+
     );
   }
 }
 
-// class RequestItem extends StatelessWidget {
-//   final String orderNumber;
-//   final String status;
-//   final String date;
-//   final int numberOfCrates;
-//   final String customerName;
-//   final String customerNumber;
-//   final String customerImage;
-//   final Function(String) onUpdateStatus; // Callback to update status
-//
-//   const RequestItem({
-//     required this.orderNumber,
-//     required this.status,
-//     required this.date,
-//     required this.numberOfCrates,
-//     required this.customerName,
-//     required this.customerNumber,
-//     required this.customerImage,
-//     required this.onUpdateStatus, // Pass callback to constructor
-//   });
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final userRole = GlobalConstants.getUser()?.role;
-//
-//     return Card(
-//       elevation: 2,
-//       margin: EdgeInsets.symmetric(vertical: 8),
-//       child: ListTile(
-//         title: Text(orderNumber),
-//         subtitle: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text('Status: $status'),
-//             Text('Date: ${date.formatDateString()}'),
-//             Text('Number of Crates: $numberOfCrates'),
-//             if (userRole == "owner") Text('Customer: $customerName'),
-//             Text('Contact: $customerNumber'),
-//           ],
-//         ),
-//         trailing: _buildTrailingWidget(userRole),
-//       ),
-//     );
-//   }
-//
-//   Widget? _buildTrailingWidget(String? userRole) {
-//     if (userRole == "owner") {
-//       return PopupMenuButton<String>(
-//         itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-//           PopupMenuItem<String>(
-//             value: 'pending',
-//             child: Text('pending'),
-//           ),
-//           PopupMenuItem<String>(
-//             value: 'on_the_way',
-//             child: Text('On the Way'),
-//           ),
-//           PopupMenuItem<String>(
-//             value: 'completed',
-//             child: Text('Completed'),
-//           ),
-//           PopupMenuItem<String>(
-//             value: 'rejected',
-//             child: Text('Rejected'),
-//           ),
-//         ],
-//         onSelected: (String value) {
-//           // Handle status update based on selected value
-//           // _handleStatusUpdate(value);
-//           onUpdateStatus(value); // Call callback with selected value
-//         },
-//       );
-//     } else {
-//       return IconButton(
-//         icon: Icon(Icons.cancel),
-//         onPressed: () {
-//           // Handle cancel action
-//           // This could be showing a confirmation dialog and updating status accordingly
-//           // For simplicity, let's assume we just log the action
-//           print('Cancel action for order: $orderNumber');
-//           onUpdateStatus("cancelled"); // Call callback with selected value
-//         },
-//       );
-//     }
-//   }
-//
-// }
 
 
 class RequestItem extends StatelessWidget {
@@ -240,6 +157,7 @@ class RequestItem extends StatelessWidget {
   final String customerImage;
   final String eggType;
   final Function(String) onUpdateStatus; // Callback to update status
+  final BuildContext context; // Add context parameter
 
   const RequestItem({
     required this.orderNumber,
@@ -251,6 +169,8 @@ class RequestItem extends StatelessWidget {
     required this.customerImage,
     required this.onUpdateStatus, // Pass callback to constructor
     required this.eggType,
+    required this.context, // Accept context parameter
+
   });
 
   @override
@@ -323,11 +243,26 @@ class RequestItem extends StatelessWidget {
         },
       );
     } else {
+      if (status.toLowerCase() == 'cancelled') {
+        return null; // Return null to hide the trailing widget
+      }
       return IconButton(
         icon: Icon(Icons.cancel),
         onPressed: () {
-          print('Cancel action for order: $orderNumber');
-          onUpdateStatus("cancelled"); // Call callback with selected value
+          // print('Cancel action for order: $orderNumber');
+          AlertDialogUtils.showConfirmationDialog(
+            context,
+            'Confirmation',
+            'Are you sure you want to proceed?',
+                () {
+              // Handle confirmation
+              print('User confirmed action');
+              onUpdateStatus("cancelled"); // Call callback with selected value
+            },
+            cancelButtonText: 'Cancel', // Optional: Custom cancel button text
+            confirmButtonText: 'Proceed', // Optional: Custom confirm button text
+            showCancelButton: true, // Optional: Whether to show the cancel button
+          );
         },
       );
     }

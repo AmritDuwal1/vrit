@@ -39,7 +39,6 @@ extension CapitalizeFirstLetterExtension on String {
   String get reverseFormatAndCapitalize =>
       isEmpty ? '' :  replaceAll(' ', '_').toLowerCase();
 
-
 }
 
 extension CapitalizeFirstLetterNullableExtension on String? {
@@ -68,5 +67,22 @@ extension StringExtensions on String {
   bool get isUrl {
     final Uri? uri = Uri.tryParse(this);
     return uri != null && (uri.scheme == 'http' || uri.scheme == 'https');
+  }
+}
+
+// extension NepaliPhoneNumberValidation on String {
+//   bool get isValidNepaliPhoneNumber {
+//     // Regular expression to match a valid Nepali phone number
+//     RegExp regex = RegExp(r'^98[4-9][0-9]{7}$');
+//     return regex.hasMatch(this);
+//   }
+// }
+
+extension NepaliPhoneNumberValidation on String? {
+  bool get isValidNepaliPhoneNumber {
+    if (this == null) return false;
+    // Regular expression to match a valid Nepali phone number
+    RegExp regex = RegExp(r'^98[4-9][0-9]{7}$');
+    return regex.hasMatch(this!);
   }
 }
