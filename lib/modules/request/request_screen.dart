@@ -127,6 +127,7 @@ class RequestList extends StatelessWidget {
           customerName: cartItem.user?.username ?? "",
           customerNumber: cartItem.user?.phoneNumber ?? "",
           customerImage: 'https://example.com/image.jpg', // Replace with the actual customer image URL
+          eggType: cartItem.eggType ?? "Hen",
           onUpdateStatus: (status) {
             // Call updateRequestStatus method from RequestViewModel
             Provider.of<RequestViewModel>(context, listen: false).updateRequestStatus(
@@ -237,6 +238,7 @@ class RequestItem extends StatelessWidget {
   final String customerName;
   final String customerNumber;
   final String customerImage;
+  final String eggType;
   final Function(String) onUpdateStatus; // Callback to update status
 
   const RequestItem({
@@ -248,6 +250,7 @@ class RequestItem extends StatelessWidget {
     required this.customerNumber,
     required this.customerImage,
     required this.onUpdateStatus, // Pass callback to constructor
+    required this.eggType,
   });
 
   @override
@@ -265,6 +268,7 @@ class RequestItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Status: $status'),
+            Text('Egg Type: $eggType'),
             Text('Date: ${date.formatDateString()}'),
             Text('Number of Crates: $numberOfCrates'),
             if (userRole == "owner") Text('Customer: $customerName'),

@@ -20,11 +20,6 @@ class CartAPI {
         endpoint: Endpoint.cartList,
       ).send<List<CartItem>>((json) => [CartItem.fromJson(json)]);
 
-      // print('API Request: ${apiRequest.request.method} ${apiRequest.request.url}');
-      // ArrayContainer<List<CartItem>> response = await apiRequest.send<List<CartItem>>(
-      //       (json) => (json as List).map((item) => CartItem.fromJson(item)).toList(),
-      // );
-
       if (response.data != null) {
         success(response); // Success callback
         return response; // Return the response
