@@ -128,30 +128,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<HomeViewModel>(
           create: (context) => HomeViewModel(),
         ),
-        // ChangeNotifierProvider<BaseViewModel>(
-        //   create: (context) {
-        //     // Create the BaseViewModel instance
-        //     BaseViewModel viewModel = BaseViewModel();
-        //
-        //
-        //     // showResultDialog(context, viewModel.result!, () {
-        //     //   viewModel.result = null;
-        //     // });
-        //
-        //     // Add a listener to viewModel.result
-        //     viewModel.addListener(() {
-        //       // Check if viewModel.result is not null
-        //       if (viewModel.result != null) {
-        //         // Show the result dialog
-        //         showResultDialog(context, viewModel.result!, () {
-        //           viewModel.result = null;
-        //         });
-        //       }
-        //     });
-        //
-        //     return viewModel;
-        //   },
-        // ),
         ChangeNotifierProvider<ProfileViewModel>(
           create: (context) => ProfileViewModel(),
         ),
@@ -179,6 +155,7 @@ class MyApp extends StatelessWidget {
         // home: homeScreen,
         home:  StreamBuilder<bool>(
           stream: GlobalConstants.loginStatusStream,
+          initialData: GlobalConstants.isLoggedIn,
           builder: (context, snapshot) {
               bool isLoggedIn = snapshot.data ?? false;
               return isLoggedIn ? TabBarScreen() : LoginScreen();

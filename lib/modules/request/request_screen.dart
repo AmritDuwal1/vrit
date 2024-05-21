@@ -205,6 +205,8 @@ class RequestItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userRole = GlobalConstants.getUser()?.role;
+
     return Card(
       elevation: 2,
       margin: EdgeInsets.symmetric(vertical: 8),
@@ -216,59 +218,53 @@ class RequestItem extends StatelessWidget {
             Text('Status: $status'),
             Text('Date: ${date.formatDateString()}'),
             Text('Number of Crates: $numberOfCrates'),
-            if (GlobalConstants.getUser()?.role == "owner")
-              Text('Customer: $customerName'),
+            if (userRole == "owner") Text('Customer: $customerName'),
             Text('Contact: $customerNumber'),
           ],
         ),
-        trailing: GlobalConstants.getUser()?.role == "owner"
-            ? IconButton(
-          icon: Icon(Icons.info),
-          onPressed: () {
-            // Show dialog for updating status
-            _showUpdateStatusDialog(context);
-          },
-        )
-            : null,
+        trailing: _buildTrailingWidget(userRole),
       ),
     );
   }
 
-  void _showUpdateStatusDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Update Status'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ListTile(
-                title: Text('Pending'),
-                onTap: () {
-                  Navigator.pop(context); // Close dialog
-                  // Handle status update for Pending
-                },
-              ),
-              ListTile(
-                title: Text('Approved'),
-                onTap: () {
-                  Navigator.pop(context); // Close dialog
-                  // Handle status update for Approved
-                },
-              ),
-              ListTile(
-                title: Text('Rejected'),
-                onTap: () {
-                  Navigator.pop(context); // Close dialog
-                  // Handle status update for Rejected
-                },
-              ),
-            ],
+  Widget? _buildTrailingWidget(String? userRole) {
+    if (userRole == "owner") {
+      return PopupMenuButton<String>(
+        itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+          PopupMenuItem<String>(
+            value: 'onTheWay',
+            child: Text('On the Way'),
           ),
-        );
-      },
-    );
+          PopupMenuItem<String>(
+            value: 'completed',
+            child: Text('Completed'),
+          ),
+          PopupMenuItem<String>(
+            value: 'rejected',
+            child: Text('Rejected'),
+          ),
+        ],
+        onSelected: (String value) {
+          // Handle status update based on selected value
+          _handleStatusUpdate(value);
+        },
+      );
+    } else {
+      return IconButton(
+        icon: Icon(Icons.cancel),
+        onPressed: () {
+          // Handle cancel action
+          // This could be showing a confirmation dialog and updating status accordingly
+          // For simplicity, let's assume we just log the action
+          print('Cancel action for order: $orderNumber');
+        },
+      );
+    }
+  }
+
+  void _handleStatusUpdate(String status) {
+    // Handle status update logic based on selected status
+    print('Status update to: $status for order: $orderNumber');
+    // You can add logic here to update the status via API or local state management
   }
 }
