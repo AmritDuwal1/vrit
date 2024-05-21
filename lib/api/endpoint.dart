@@ -168,6 +168,8 @@ enum Endpoint {
   addToCart,
   cartList,
   dailyUpdate,
+  updateRequestStatus,
+
 }
 
 extension EndpointExtension on Endpoint {
@@ -188,6 +190,8 @@ extension EndpointExtension on Endpoint {
         return "poultryapp/api/carts/";
       case Endpoint.dailyUpdate:
         return "poultryapp/api/poultry-stats/";
+      case Endpoint.updateRequestStatus:
+        return "poultryapp/api/cart-items/update-status/";
     }
   }
 
@@ -198,6 +202,7 @@ extension EndpointExtension on Endpoint {
       case Endpoint.addToCart:
       case Endpoint.dailyUpdate:
       case Endpoint.googleLogin:
+      case Endpoint.updateRequestStatus:
         return "POST";
       case Endpoint.deleteUser:
         return "DELETE";
@@ -213,6 +218,7 @@ extension EndpointExtension on Endpoint {
       case Endpoint.addToCart:
       case Endpoint.cartList:
       case Endpoint.dailyUpdate:
+      case Endpoint.updateRequestStatus:
         return true;
       default:
         return false;

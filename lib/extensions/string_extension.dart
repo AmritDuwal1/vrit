@@ -31,6 +31,15 @@ extension ExtString on String {
 extension CapitalizeFirstLetterExtension on String {
   String get capitalizeFirstLetter =>
       isEmpty ? '' : '${this[0].toUpperCase()}${substring(1)}';
+
+
+  String get formatAndCapitalize =>
+      isEmpty ? '' :  replaceAll('_', ' ').capitalizeFirstLetter;
+
+  String get reverseFormatAndCapitalize =>
+      isEmpty ? '' :  replaceAll(' ', '_').toLowerCase();
+
+
 }
 
 extension CapitalizeFirstLetterNullableExtension on String? {

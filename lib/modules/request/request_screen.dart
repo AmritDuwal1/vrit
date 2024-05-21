@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:poultry/extensions/string_extension.dart';
 
 import 'package:poultry/modules/request/request_view_model.dart';
 import 'package:poultry/path_collection.dart';
@@ -120,18 +121,24 @@ class RequestList extends StatelessWidget {
         final cartItem = cartItems[index];
         return RequestItem(
           orderNumber: "#Request Number: ${cartItem.id.toString()}",
-          status: 'Pending', // Replace with the actual status
+          status: (cartItem.status ?? "Pending").formatAndCapitalize, // Replace with the actual status
           date: cartItem.createdAt.toString(), // Replace with the actual date
           numberOfCrates: cartItem.numberOfCrates ?? 1,
           customerName: cartItem.user?.username ?? "",
           customerNumber: cartItem.user?.phoneNumber ?? "",
           customerImage: 'https://example.com/image.jpg', // Replace with the actual customer image URL
+          onUpdateStatus: (status) {
+            // Call updateRequestStatus method from RequestViewModel
+            Provider.of<RequestViewModel>(context, listen: false).updateRequestStatus(
+              status: status,
+              itemId: cartItem.id ?? 0,
+            );
+          },
         );
       },
     );
   }
 }
-
 
 // class RequestItem extends StatelessWidget {
 //   final String orderNumber;
@@ -141,6 +148,7 @@ class RequestList extends StatelessWidget {
 //   final String customerName;
 //   final String customerNumber;
 //   final String customerImage;
+//   final Function(String) onUpdateStatus; // Callback to update status
 //
 //   const RequestItem({
 //     required this.orderNumber,
@@ -150,10 +158,13 @@ class RequestList extends StatelessWidget {
 //     required this.customerName,
 //     required this.customerNumber,
 //     required this.customerImage,
+//     required this.onUpdateStatus, // Pass callback to constructor
 //   });
 //
 //   @override
 //   Widget build(BuildContext context) {
+//     final userRole = GlobalConstants.getUser()?.role;
+//
 //     return Card(
 //       elevation: 2,
 //       margin: EdgeInsets.symmetric(vertical: 8),
@@ -165,24 +176,58 @@ class RequestList extends StatelessWidget {
 //             Text('Status: $status'),
 //             Text('Date: ${date.formatDateString()}'),
 //             Text('Number of Crates: $numberOfCrates'),
-//             if (GlobalConstants.getUser()?.role == "owner")
-//               Text('Customer: $customerName'),
+//             if (userRole == "owner") Text('Customer: $customerName'),
 //             Text('Contact: $customerNumber'),
 //           ],
 //         ),
-//         // leading: CircleAvatar(
-//         //   backgroundImage: NetworkImage(customerImage),
-//         // ),
-//         trailing: IconButton(
-//           icon: Icon(Icons.info),
-//           onPressed: () {
-//           },
-//         ),
+//         trailing: _buildTrailingWidget(userRole),
 //       ),
 //     );
 //   }
 //
+//   Widget? _buildTrailingWidget(String? userRole) {
+//     if (userRole == "owner") {
+//       return PopupMenuButton<String>(
+//         itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+//           PopupMenuItem<String>(
+//             value: 'pending',
+//             child: Text('pending'),
+//           ),
+//           PopupMenuItem<String>(
+//             value: 'on_the_way',
+//             child: Text('On the Way'),
+//           ),
+//           PopupMenuItem<String>(
+//             value: 'completed',
+//             child: Text('Completed'),
+//           ),
+//           PopupMenuItem<String>(
+//             value: 'rejected',
+//             child: Text('Rejected'),
+//           ),
+//         ],
+//         onSelected: (String value) {
+//           // Handle status update based on selected value
+//           // _handleStatusUpdate(value);
+//           onUpdateStatus(value); // Call callback with selected value
+//         },
+//       );
+//     } else {
+//       return IconButton(
+//         icon: Icon(Icons.cancel),
+//         onPressed: () {
+//           // Handle cancel action
+//           // This could be showing a confirmation dialog and updating status accordingly
+//           // For simplicity, let's assume we just log the action
+//           print('Cancel action for order: $orderNumber');
+//           onUpdateStatus("cancelled"); // Call callback with selected value
+//         },
+//       );
+//     }
+//   }
+//
 // }
+
 
 class RequestItem extends StatelessWidget {
   final String orderNumber;
@@ -192,6 +237,7 @@ class RequestItem extends StatelessWidget {
   final String customerName;
   final String customerNumber;
   final String customerImage;
+  final Function(String) onUpdateStatus; // Callback to update status
 
   const RequestItem({
     required this.orderNumber,
@@ -201,15 +247,18 @@ class RequestItem extends StatelessWidget {
     required this.customerName,
     required this.customerNumber,
     required this.customerImage,
+    required this.onUpdateStatus, // Pass callback to constructor
   });
 
   @override
   Widget build(BuildContext context) {
     final userRole = GlobalConstants.getUser()?.role;
+    Color cardColor = _getStatusColor(status);
 
     return Card(
       elevation: 2,
       margin: EdgeInsets.symmetric(vertical: 8),
+      color: cardColor,
       child: ListTile(
         title: Text(orderNumber),
         subtitle: Column(
@@ -227,12 +276,33 @@ class RequestItem extends StatelessWidget {
     );
   }
 
+  Color _getStatusColor(String status) {
+    switch (status.reverseFormatAndCapitalize) {
+      case 'pending':
+        return Colors.yellow[100] ?? Colors.yellow;
+      case 'on_the_way':
+        return Colors.blue[100] ?? Colors.blue;
+      case 'completed':
+        return Colors.green[100] ?? Colors.green;
+      case 'rejected':
+        return Colors.red[100] ?? Colors.red;
+      case 'cancelled':
+        return Colors.grey[100] ?? Colors.grey;
+      default:
+        return Colors.white; // Default color
+    }
+  }
+
   Widget? _buildTrailingWidget(String? userRole) {
     if (userRole == "owner") {
       return PopupMenuButton<String>(
         itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
           PopupMenuItem<String>(
-            value: 'onTheWay',
+            value: 'pending',
+            child: Text('pending'),
+          ),
+          PopupMenuItem<String>(
+            value: 'on_the_way',
             child: Text('On the Way'),
           ),
           PopupMenuItem<String>(
@@ -245,26 +315,17 @@ class RequestItem extends StatelessWidget {
           ),
         ],
         onSelected: (String value) {
-          // Handle status update based on selected value
-          _handleStatusUpdate(value);
+          onUpdateStatus(value); // Call callback with selected value
         },
       );
     } else {
       return IconButton(
         icon: Icon(Icons.cancel),
         onPressed: () {
-          // Handle cancel action
-          // This could be showing a confirmation dialog and updating status accordingly
-          // For simplicity, let's assume we just log the action
           print('Cancel action for order: $orderNumber');
+          onUpdateStatus("cancelled"); // Call callback with selected value
         },
       );
     }
-  }
-
-  void _handleStatusUpdate(String status) {
-    // Handle status update logic based on selected status
-    print('Status update to: $status for order: $orderNumber');
-    // You can add logic here to update the status via API or local state management
   }
 }

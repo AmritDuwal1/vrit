@@ -56,4 +56,31 @@ class PoultryStatsAPI {
       failure(FlutterError("$e")); // Failure callback
     }
   }
+
+  Future<void> updateRequestStatus(
+      String? status,
+      int itemId,
+      Function(SingleContainer<PoultryStats>) success,
+      Function(FlutterError) failure,
+      ) async {
+    try {
+      final apiRequest = Endpoint.updateRequestStatus.apiRequest({
+        "remaining_url": "item_id=$itemId",
+        "status": status
+      });
+      var response = await apiRequest.sendForSingleContainer<PoultryStats>(
+              (json) => PoultryStats.fromJson(json));
+      print(
+          'API Request: ${apiRequest.request.method} ${apiRequest.request.url}');
+      if (response.data != null) {
+        success(response); // Success callback
+      } else {
+        failure(
+            FlutterError(response.error?.message ?? 'Something Went Wrong!'));
+      }
+    } catch (e) {
+      print('Error: $e');
+      failure(FlutterError("$e")); // Failure callback
+    }
+  }
 }

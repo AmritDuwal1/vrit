@@ -20,7 +20,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
   void initState() {
     super.initState();
     _currentIndex = 0;
-     profileIndex = (GlobalConstants.getUser()?.role == "admin") ? 3: 2;
+     profileIndex = (GlobalConstants.getUser()?.role == "owner") ? 3: 2;
     _profileScreen = ProfileScreen(onLogout: () {
       // setState(() {
       //   _currentIndex = 0;
@@ -39,7 +39,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
   }
 
   final List<Widget> _tabs = [
-    if (GlobalConstants.getUser()?.role == "admin")
+    if (GlobalConstants.getUser()?.role == "owner")
     Tab1(),
     CartTab(),
     const Tab2(),
@@ -70,7 +70,7 @@ class _TabBarScreenState extends State<TabBarScreen> {
           color: Colors.blueGrey, // Set the color for unselected labels
         ),
         items:  [
-          if (GlobalConstants.getUser()?.role == "admin")
+          if (GlobalConstants.getUser()?.role == "owner")
           BottomNavigationBarItem(
             icon: Icon(Icons.home, size: 24),
             label: 'Home',
