@@ -66,9 +66,8 @@ class AlertDialogUtils {
               ),
             TextButton(
               onPressed: () {
-                // Handle confirmation
-                onConfirm(); // Call the provided callback
                 Navigator.of(context).pop(); // Close the dialog
+                onConfirm(); // Call the provided callback
               },
               child: Text(confirmButtonText),
             ),

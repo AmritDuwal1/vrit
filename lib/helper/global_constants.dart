@@ -72,7 +72,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class GlobalConstants {
   // static String baseUrl = "http://127.0.0.1:8000";
-  static String baseUrl = "http://192.168.1.73:8000";
+  // static String baseUrl = "http://192.168.1.73:8000";
+
+  // Production
+  static String baseUrl = "https://duwalpoultry.nepalnesthotels.com";
+
+
   static StreamController<bool> _loginStatusController =
   StreamController<bool>.broadcast();
   static late SharedPreferences _prefs;

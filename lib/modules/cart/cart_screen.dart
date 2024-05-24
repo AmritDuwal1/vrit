@@ -119,7 +119,17 @@ class _CartPageState extends State<CartPage> {
         ElevatedButton(
           onPressed: () {
             if (!(GlobalConstants.getUser()?.phoneNumber?.isValidNepaliPhoneNumber ?? false)) {
-            Navigator.pushNamed(context, '/edit-profile');
+              AlertDialogUtils.showConfirmationDialog(
+                context,
+                'Profile Update',
+                'Please provide valid contact number.',
+                    () {
+                  Navigator.pushNamed(context, '/edit-profile');
+                },
+                cancelButtonText: 'Cancel', // Optional: Custom cancel button text
+                confirmButtonText: 'Proceed', // Optional: Custom confirm button text
+                showCancelButton: false, // Optional: Whether to show the cancel button
+              );
             return;
             }
             viewModel.addItemToCart(
