@@ -27,9 +27,10 @@ class _RequestScreenState extends State<RequestScreen> {
 
   @override
   Widget build(BuildContext context) {
+    LocalizationExtension.context = context;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Requests'),
+        title: Text('Requests'.translate),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -37,7 +38,7 @@ class _RequestScreenState extends State<RequestScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Today Requests:',
+              'today_requests'.translate + ':',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16),
@@ -66,10 +67,10 @@ class _RequestScreenState extends State<RequestScreen> {
                     return Center(child: CircularProgressIndicator());
                   } else if (model.error != null) {
                     // Show error message
-                    return Center(child: Text('Error: ${model.error}'));
+                    return Center(child: Text('${"Error".translate}: ${model.error}'));
                   } else if (model.cartItems != null && model.cartItems!.isEmpty) {
                     // Show empty data message
-                    return EmptyDataMessage(message: 'No orders found.');
+                    return EmptyDataMessage(message: 'no_orders_found'.translate);
                   } else {
                     // Show list when data is loaded
                     return RequestList(cartItems: model.cartItems!, scrollController: _scrollController, context: context,);
@@ -122,8 +123,9 @@ class RequestList extends StatelessWidget {
       itemBuilder: (BuildContext context, int index) {
         final cartItem = cartItems[index];
         return RequestItem(
-          orderNumber: "#Request Number: ${cartItem.id.toString()}",
-          status: (cartItem.status ?? "Pending").formatAndCapitalize, // Replace with the actual status
+          // orderNumber: "#Request Number: ${cartItem.id.toString()}",
+          orderNumber: "${'request_number'.translate}: ${cartItem.id.toString()}",
+          status: (cartItem.status ?? "Pending".translate).formatAndCapitalize, // Replace with the actual status
           date: cartItem.createdAt.toString(), // Replace with the actual date
           numberOfCrates: cartItem.numberOfCrates ?? 1,
           customerName: cartItem.user?.username ?? "",
@@ -187,12 +189,12 @@ class RequestItem extends StatelessWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Status: $status'),
-            Text('Egg Type: $eggType'),
-            Text('Date: ${date.formatDateString()}'),
-            Text('Number of Crates: $numberOfCrates'),
-            if (userRole == "owner") Text('Customer: $customerName'),
-            Text('Contact: $customerNumber'),
+            Text('${"Status".translate}: $status'),
+            Text('${"egg_type".translate}: $eggType'),
+            Text('${"Date".translate}: ${date.formatDateString()}'),
+            Text('${"number_of_crates".translate}: $numberOfCrates'),
+            if (userRole == "owner") Text('${"Customer".translate}: $customerName'),
+            Text('${"Contact".translate}: $customerNumber'),
           ],
         ),
         trailing: _buildTrailingWidget(userRole),
@@ -223,19 +225,19 @@ class RequestItem extends StatelessWidget {
         itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
           PopupMenuItem<String>(
             value: 'pending',
-            child: Text('pending'),
+            child: Text('pending'.translate),
           ),
           PopupMenuItem<String>(
             value: 'on_the_way',
-            child: Text('On the Way'),
+            child: Text('on_the_way'.translate),
           ),
           PopupMenuItem<String>(
             value: 'completed',
-            child: Text('Completed'),
+            child: Text('Completed'.translate),
           ),
           PopupMenuItem<String>(
             value: 'rejected',
-            child: Text('Rejected'),
+            child: Text('Rejected'.translate),
           ),
         ],
         onSelected: (String value) {
@@ -252,15 +254,15 @@ class RequestItem extends StatelessWidget {
           // print('Cancel action for order: $orderNumber');
           AlertDialogUtils.showConfirmationDialog(
             context,
-            'Confirmation',
+            'Confirmation'.translate,
             'Are you sure you want to proceed?',
                 () {
               // Handle confirmation
               print('User confirmed action');
               onUpdateStatus("cancelled"); // Call callback with selected value
             },
-            cancelButtonText: 'Cancel', // Optional: Custom cancel button text
-            confirmButtonText: 'Proceed', // Optional: Custom confirm button text
+            cancelButtonText: 'Cancel'.translate, // Optional: Custom cancel button text
+            confirmButtonText: 'Proceed'.translate, // Optional: Custom confirm button text
             showCancelButton: true, // Optional: Whether to show the cancel button
           );
         },

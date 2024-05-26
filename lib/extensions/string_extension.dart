@@ -84,7 +84,6 @@ extension StringExtensions on String {
 // Define a global variable for storing context
 BuildContext? _appLocalizationContext;
 
-
 // Extension on String for localization
 extension LocalizationExtension on String {
   // Setter for the context
@@ -95,11 +94,53 @@ extension LocalizationExtension on String {
   // Getter for the context
   static BuildContext get context => _appLocalizationContext!;
 
-  // Method to translate the string
+  // // Getter to translate and format the string with appropriate capitalization
+  // String get translate {
+  //   String translated = AppLocalizations.of(context)?.translate(this) ?? this;
+  //   return _applyCapitalization(translated);
+  // }
+
+  // Getter to translate and format the string with appropriate capitalization
   String get translate {
-    return AppLocalizations.of(context)?.translate(this) ?? this;
+    String key = this.toLowerCase().replaceAll(' ', '_');
+    String translated = AppLocalizations.of(context)?.translate(key) ?? this;
+    return _applyCapitalization(translated);
+  }
+
+
+  // Private method to apply capitalization based on original string
+  String _applyCapitalization(String translated) {
+    if (isEmpty) {
+      return translated; // Return as is if empty
+    }
+
+    // Check if original string starts with a capital letter
+    bool shouldCapitalizeFirstLetter = this.substring(0, 1) == this.substring(0, 1).toUpperCase();
+
+    // Capitalize first letter of translated string if needed
+    if (shouldCapitalizeFirstLetter) {
+      translated = translated.capitalizeFirstLetter;
+    }
+
+    return translated;
   }
 }
+
+// // Extension on String for localization
+// extension LocalizationExtension on String {
+//   // Setter for the context
+//   static set context(BuildContext context) {
+//     _appLocalizationContext = context;
+//   }
+//
+//   // Getter for the context
+//   static BuildContext get context => _appLocalizationContext!;
+//
+//   // Method to translate the string
+//   String get translate {
+//     return AppLocalizations.of(context)?.translate(this) ?? this;
+//   }
+// }
 
 
 

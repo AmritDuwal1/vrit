@@ -135,38 +135,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   }),
                   buildProfileOption('Logout', Icons.logout, color: Colors.blue,
                       onTap: () {
-                    // showDialog(
-                    //   context: context,
-                    //   builder: (BuildContext context) {
-                    //     return AlertDialog(
-                    //       title: const Text('Confirm Logout'),
-                    //       content:
-                    //           const Text('Are you sure you want to logout?'),
-                    //       actions: [
-                    //         TextButton(
-                    //           onPressed: () {
-                    //             Navigator.of(context).pop(); // Close the dialog
-                    //           },
-                    //           child: const Text('Cancel'),
-                    //         ),
-                    //         TextButton(
-                    //           onPressed: () {
-                    //             // Handle logout
-                    //             GlobalConstants.removeUser(); // Clear user data
-                    //             widget.onLogout();
-                    //             Navigator.of(context).pop();
-                    //             // Navigator.pushReplacement(
-                    //             //   context,
-                    //             //   MaterialPageRoute(builder: (context) => HomeScreen()), // Navigate to login screen
-                    //             // );
-                    //             // Navigator.popUntil(context, (route) => route.isFirst);
-                    //           },
-                    //           child: const Text('Logout'),
-                    //         ),
-                    //       ],
-                    //     );
-                    //   },
-                    // );
                         AlertDialogUtils.showConfirmationDialog(
                           context,
                           'Confirm Logout',

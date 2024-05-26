@@ -23,57 +23,6 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
 
-
-// Future<void> main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await GlobalConstants.initSharedPreferences(); // Initialize SharedPreferences
-//   User? user = GlobalConstants.getUser(); // Retrieve user from SharedPreferences
-//
-//   await Firebase.initializeApp();
-//   await FirebaseApi.initNotifications();
-//   String? token;
-//   try {
-//     token = await FirebaseMessaging.instance.getToken();
-//     print("token: $token");
-//   } catch (e) {
-//     print('Failed to get FCM token: $e');
-//   }
-//
-//   await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-//     alert: true, // Required to display a heads up notification
-//     badge: true,
-//     sound: true,
-//   );
-//   FirebaseMessaging.instance.requestPermission(
-//     alert: true,
-//     badge: true,
-//     provisional: false,
-//     sound: true,
-//   );
-//
-//
-//
-//   // Handle incoming messages
-//   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-//     showNotification(message);
-//   });
-//
-//
-//   Widget homeScreen = user != null ? TabBarScreen() : LoginScreen(); // Determine the home screen based on user login status
-//
-//   GlobalConstants.initSharedPreferences().then((_) {
-//     if (token != null) {
-//       GlobalConstants.saveFirebaseToken(token);
-//     }
-//     initializeDateFormatting('ne_NP').then((_) {
-//       // runApp(MyApp());
-//       // runApp(const MyApp());
-//       runApp(MyApp(homeScreen: homeScreen));
-//     });
-//
-//   });
-// }
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GlobalConstants.initSharedPreferences(); // Initialize SharedPreferences

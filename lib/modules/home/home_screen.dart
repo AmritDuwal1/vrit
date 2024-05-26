@@ -18,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen>  {
+
   @override
   HomeViewModel get viewModel => HomeViewModel();
 
@@ -44,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen>  {
       appBar: AppBar(
         // title: Text('Home'),
         // title: Text(localizedStrings.translate('Home') ?? 'Default Text'),
-        title: Text('hello'.translate),
+        title: Text('home'.translate),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -79,20 +80,20 @@ class _HomeScreenState extends State<HomeScreen>  {
                     titlesData: buildTitlesData(viewModel.last7DaysStats),
                   ),
                   SizedBox(height: 16),
-                  buildSectionTitle('Number of Egg Crates 7 Days'),
+                  buildSectionTitle('num_egg_crates_7_days'.translate),
                   LineChartWidget(
                     dataSpots: extractHensSoldDataSpots(viewModel.last7DaysStats),
                     colors: [Colors.green],
                     titlesData: buildTitlesData(viewModel.last7DaysStats),
                   ),
                   SizedBox(height: 16),
-                  buildSectionTitle('Hen Sold for the Last 7 Days'),
+                  buildSectionTitle('hen_sold_7_days'.translate),
                   LineChartWidget(
                     dataSpots: extractHenDeathsDataSpots(viewModel.last7DaysStats),
                     colors: [Colors.red],
                     titlesData: buildTitlesData(viewModel.last7DaysStats),
                   ),
-                  buildSectionTitle('Hen Deaths for the Last 7 Days'),
+                  buildSectionTitle('hen_deaths_7_days'.translate),
                 ],
               ),
             ),
@@ -203,7 +204,7 @@ class LineChartWidget extends StatelessWidget {
         height: 200,
         alignment: Alignment.center,
         child: Text(
-          'No data available',
+          'no_data_available'.translate,
           style: TextStyle(fontSize: 16),
         ),
       );
@@ -256,7 +257,7 @@ class TodayUpdateWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Today\'s Update',
+            "today_update".translate,
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 12),
@@ -265,9 +266,9 @@ class TodayUpdateWidget extends StatelessWidget {
           else
             Column(
               children: [
-                buildUpdateRow('Total Number of Hen Died', totalHenDied.toString()),
-                buildUpdateRow('Total Number of Filled Crates', totalFilledCrates.toString()),
-                buildUpdateRow('Total Number of Hen Sold', totalHenSold.toString()),
+                buildUpdateRow('total_hen_died'.translate, totalHenDied.toString()),
+                buildUpdateRow('total_filled_crates'.translate, totalFilledCrates.toString()),
+                buildUpdateRow('total_hen_sold'.translate, totalHenSold.toString()),
               ],
             ),
         ],
