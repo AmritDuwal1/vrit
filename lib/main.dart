@@ -68,124 +68,6 @@ void main() async {
 }
 
 
-// class MyApp extends StatelessWidget {
-//   final Widget homeScreen;
-//
-//   // const MyApp({super.key});
-//    MyApp({Key? key, required this.homeScreen}) : super(key: key);
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MultiProvider(
-//       providers: [
-//         ChangeNotifierProvider<HomeViewModel>(
-//           create: (context) => HomeViewModel(),
-//         ),
-//         ChangeNotifierProvider<ProfileViewModel>(
-//           create: (context) => ProfileViewModel(),
-//         ),
-//         ChangeNotifierProvider<RequestViewModel>(
-//           create: (context) => RequestViewModel(),
-//         ),
-//         ChangeNotifierProvider<CartViewModel>(
-//           create: (context) => CartViewModel(),
-//         ),
-//
-//         ChangeNotifierProvider<AlertManager>(
-//           create: (context) => AlertManager(),
-//         ),
-//         ChangeNotifierProvider<EditProfileViewModel>(
-//           create: (context) => EditProfileViewModel(),
-//         ),
-//       ],
-//       child: MaterialApp(
-//         title: 'Duwal Poultry',
-//         theme: ThemeData(
-//           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-//           useMaterial3: true,
-//         ),
-//         debugShowCheckedModeBanner: false,
-//         // home: homeScreen,
-//         home:  StreamBuilder<bool>(
-//           stream: GlobalConstants.loginStatusStream,
-//           initialData: GlobalConstants.isLoggedIn,
-//           builder: (context, snapshot) {
-//               bool isLoggedIn = snapshot.data ?? false;
-//               return isLoggedIn ? TabBarScreen() : LoginScreen();
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class MyApp extends StatelessWidget {
-//   final Widget homeScreen;
-//
-//   const MyApp({Key? key, required this.homeScreen}) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MultiProvider(
-//       providers: [
-//         ChangeNotifierProvider<HomeViewModel>(
-//           create: (context) => HomeViewModel(),
-//         ),
-//         ChangeNotifierProvider<ProfileViewModel>(
-//           create: (context) => ProfileViewModel(),
-//         ),
-//         ChangeNotifierProvider<RequestViewModel>(
-//           create: (context) => RequestViewModel(),
-//         ),
-//         ChangeNotifierProvider<CartViewModel>(
-//           create: (context) => CartViewModel(),
-//         ),
-//         ChangeNotifierProvider<AlertManager>(
-//           create: (context) => AlertManager(),
-//         ),
-//         ChangeNotifierProvider<EditProfileViewModel>(
-//           create: (context) => EditProfileViewModel(),
-//         ),
-//       ],
-//       child: MaterialApp(
-//         title: 'Duwal Poultry',
-//         theme: ThemeData(
-//           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-//           useMaterial3: true,
-//         ),
-//         supportedLocales: const [
-//           Locale('en', ''), // English
-//           Locale('es', ''), // Spanish
-//         ],
-//         localizationsDelegates: const [
-//           AppLocalizations.delegate,
-//           GlobalMaterialLocalizations.delegate,
-//           GlobalWidgetsLocalizations.delegate,
-//         ],
-//         debugShowCheckedModeBanner: false,
-//         initialRoute: '/',
-//         routes: {
-//           '/': (context) => StreamBuilder<bool>(
-//             stream: GlobalConstants.loginStatusStream,
-//             initialData: GlobalConstants.isLoggedIn,
-//             builder: (context, snapshot) {
-//               bool isLoggedIn = snapshot.data ?? false;
-//               return isLoggedIn ? TabBarScreen() : LoginScreen();
-//             },
-//           ),
-//           '/edit-profile': (context) => EditProfileScreen(user: GlobalConstants.getUser()), // Example route for editing profile
-//           // Add more routes as needed
-//         },
-//         onGenerateRoute: (settings) {
-//           // Handle unknown routes if needed
-//           return MaterialPageRoute(builder: (context) => NotFoundScreen());
-//         },
-//       ),
-//     );
-//   }
-// }
-
-
 class MyApp extends StatefulWidget {
   final Widget homeScreen;
 
@@ -206,68 +88,74 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<HomeViewModel>(
-          create: (context) => HomeViewModel(),
-        ),
-        ChangeNotifierProvider<ProfileViewModel>(
-          create: (context) => ProfileViewModel(),
-        ),
-        ChangeNotifierProvider<RequestViewModel>(
-          create: (context) => RequestViewModel(),
-        ),
-        ChangeNotifierProvider<CartViewModel>(
-          create: (context) => CartViewModel(),
-        ),
-        ChangeNotifierProvider<AlertManager>(
-          create: (context) => AlertManager(),
-        ),
-        ChangeNotifierProvider<EditProfileViewModel>(
-          create: (context) => EditProfileViewModel(),
-        ),
-      ],
-      child: MaterialApp(
-        title: 'Duwal Poultry',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        locale: _locale,
-        supportedLocales: const [
-          Locale('en', ''), // English
-          Locale('es', ''), // Spanish
-        ],
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        debugShowCheckedModeBanner: false,
-        initialRoute: '/',
-        routes: {
-          '/': (context) => StreamBuilder<bool>(
-            stream: GlobalConstants.loginStatusStream,
-            initialData: GlobalConstants.isLoggedIn,
-            builder: (context, snapshot) {
-              bool isLoggedIn = snapshot.data ?? false;
-              return isLoggedIn ? TabBarScreen() : LoginScreen();
-            },
+    return LanguageChangeProvider(
+      changeLanguage: (locale) {
+        // Update _locale here
+        _locale = locale;
+      },
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<HomeViewModel>(
+            create: (context) => HomeViewModel(),
           ),
-          '/edit-profile': (context) => EditProfileScreen(user: GlobalConstants.getUser()), // Example route for editing profile
-          // Add more routes as needed
-        },
-        onGenerateRoute: (settings) {
-          // Handle unknown routes if needed
-          return MaterialPageRoute(builder: (context) => NotFoundScreen());
-        },
-        builder: (context, child) {
-          return LanguageChangeProvider(
-            changeLanguage: _changeLanguage,
-            child: child!,
-          );
-        },
+          ChangeNotifierProvider<ProfileViewModel>(
+            create: (context) => ProfileViewModel(),
+          ),
+          ChangeNotifierProvider<RequestViewModel>(
+            create: (context) => RequestViewModel(),
+          ),
+          ChangeNotifierProvider<CartViewModel>(
+            create: (context) => CartViewModel(),
+          ),
+          ChangeNotifierProvider<AlertManager>(
+            create: (context) => AlertManager(),
+          ),
+          ChangeNotifierProvider<EditProfileViewModel>(
+            create: (context) => EditProfileViewModel(),
+          ),
+        ],
+        child: MaterialApp(
+          title: 'Duwal Poultry',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          locale: _locale,
+          supportedLocales: const [
+            Locale('en', ''), // English
+            Locale('es', ''), // Spanish
+          ],
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          debugShowCheckedModeBanner: false,
+          initialRoute: '/',
+          routes: {
+            '/': (context) => StreamBuilder<bool>(
+              stream: GlobalConstants.loginStatusStream,
+              initialData: GlobalConstants.isLoggedIn,
+              builder: (context, snapshot) {
+                bool isLoggedIn = snapshot.data ?? false;
+                return isLoggedIn ? TabBarScreen() : LoginScreen();
+              },
+            ),
+            '/edit-profile': (context) => EditProfileScreen(user: GlobalConstants.getUser()), // Example route for editing profile
+            // Add more routes as needed
+          },
+          onGenerateRoute: (settings) {
+            // Handle unknown routes if needed
+            return MaterialPageRoute(builder: (context) => NotFoundScreen());
+          },
+          builder: (context, child) {
+            return LanguageChangeProvider(
+              changeLanguage: _changeLanguage,
+              child: child!,
+            );
+          },
+        ),
       ),
     );
   }
