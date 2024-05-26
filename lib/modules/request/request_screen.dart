@@ -2,9 +2,11 @@
 import 'package:flutter/material.dart';
 import 'package:poultry/extensions/string_extension.dart';
 
+
 import 'package:poultry/modules/request/request_view_model.dart';
 import 'package:poultry/path_collection.dart';
-import 'package:provider/provider.dart'; // Import provider package
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart'; // Import provider package
 
 class RequestScreen extends StatefulWidget {
 
@@ -125,13 +127,14 @@ class RequestList extends StatelessWidget {
         return RequestItem(
           // orderNumber: "#Request Number: ${cartItem.id.toString()}",
           orderNumber: "${'request_number'.translate}: ${cartItem.id.toString()}",
-          status: (cartItem.status ?? "Pending".translate).formatAndCapitalize, // Replace with the actual status
+          status: "${(cartItem.status ?? "Pending"
+          .translate).formatAndCapitalize}".translate, // Replace with the actual status
           date: cartItem.createdAt.toString(), // Replace with the actual date
           numberOfCrates: cartItem.numberOfCrates ?? 1,
           customerName: cartItem.user?.username ?? "",
           customerNumber: cartItem.user?.phoneNumber ?? "",
           customerImage: 'https://example.com/image.jpg', // Replace with the actual customer image URL
-          eggType: cartItem.eggType ?? "Hen",
+          eggType: "${cartItem.eggType ?? "Hen"}".translate,
           onUpdateStatus: (status) {
             // Call updateRequestStatus method from RequestViewModel
             Provider.of<RequestViewModel>(context, listen: false).updateRequestStatus(
@@ -185,16 +188,30 @@ class RequestItem extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: 8),
       color: cardColor,
       child: ListTile(
-        title: Text(orderNumber),
+        title: Text("# ${orderNumber}",
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('${"Status".translate}: $status'),
-            Text('${"egg_type".translate}: $eggType'),
-            Text('${"Date".translate}: ${date.formatDateString()}'),
-            Text('${"number_of_crates".translate}: $numberOfCrates'),
-            if (userRole == "owner") Text('${"Customer".translate}: $customerName'),
-            Text('${"Contact".translate}: $customerNumber'),
+            PrimaryText(text: '${"Status".translate}: $status'),
+            PrimaryText(text: '${"egg_type".translate}: $eggType'),
+            PrimaryText(text: '${"Date".translate}: ${date.formatDateString()}'),
+            PrimaryText(text: '${"number_of_crates".translate}: $numberOfCrates'),
+            if (userRole == "owner") Text('${"Customer".translate}: $customerName',
+              style: TextStyle(fontSize: 22),),
+            // Text('${"Contact".translate}: $customerNumber'),
+            Row(
+              children: [
+                PrimaryText(text: '${"Contact".translate}: $customerNumber'),
+                IconButton(
+                  icon: Icon(Icons.call),
+                  onPressed: () {
+                    final Uri phoneUri = Uri(scheme: 'tel', path: customerNumber);
+                    launchUrl(phoneUri);
+                  },
+                ),
+              ],
+            ),
           ],
         ),
         trailing: _buildTrailingWidget(userRole),

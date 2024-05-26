@@ -33,6 +33,15 @@ class _HomeScreenState extends State<HomeScreen>  {
     // });
   }
 
+  Future<void> _refreshData() async {
+    // Fetch new data
+    Provider.of<HomeViewModel>(context, listen: false).fetchData();
+    // Simulate a delay for 2 seconds (adjust duration as needed)
+    await Future.delayed(Duration(seconds: 2));
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     // HomeViewModel viewModel = Provider.of<HomeViewModel>(context);
@@ -47,57 +56,60 @@ class _HomeScreenState extends State<HomeScreen>  {
         // title: Text(localizedStrings.translate('Home') ?? 'Default Text'),
         title: Text('home'.translate),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Consumer<HomeViewModel>(
-              builder: (context, viewModel, child) {
-                if (viewModel.result != null) {
-                  Future.delayed(Duration.zero, () {
-                    // AlertManager.showAlert(context, viewModel.result!.message);
-                    showResultDialog(context, viewModel.result!, () {
-                      viewModel.result = null;
+      body: RefreshIndicator(
+        onRefresh: _refreshData,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Consumer<HomeViewModel>(
+                builder: (context, viewModel, child) {
+                  if (viewModel.result != null) {
+                    Future.delayed(Duration.zero, () {
+                      // AlertManager.showAlert(context, viewModel.result!.message);
+                      showResultDialog(context, viewModel.result!, () {
+                        viewModel.result = null;
+                      });
                     });
-                  });
-                }
-                return Container();
-              },
-            ),
-            TodayUpdateWidget(
-              totalHenDied: todayStats?.numDeadHens ?? 0,
-              totalFilledCrates: todayStats?.totalFilledEggCrates ?? 0,
-              totalHenSold: todayStats?.numHensSold ?? 0,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  LineChartWidget(
-                    dataSpots: extractDataSpots(viewModel.last7DaysStats),
-                    colors: [Colors.blue],
-                    titlesData: buildTitlesData(viewModel.last7DaysStats),
-                  ),
-                  SizedBox(height: 16),
-                  buildSectionTitle('num_egg_crates_7_days'.translate),
-                  LineChartWidget(
-                    dataSpots: extractHensSoldDataSpots(viewModel.last7DaysStats),
-                    colors: [Colors.green],
-                    titlesData: buildTitlesData(viewModel.last7DaysStats),
-                  ),
-                  SizedBox(height: 16),
-                  buildSectionTitle('hen_sold_7_days'.translate),
-                  LineChartWidget(
-                    dataSpots: extractHenDeathsDataSpots(viewModel.last7DaysStats),
-                    colors: [Colors.red],
-                    titlesData: buildTitlesData(viewModel.last7DaysStats),
-                  ),
-                  buildSectionTitle('hen_deaths_7_days'.translate),
-                ],
+                  }
+                  return Container();
+                },
               ),
-            ),
-          ],
+              TodayUpdateWidget(
+                totalHenDied: todayStats?.numDeadHens ?? 0,
+                totalFilledCrates: todayStats?.totalFilledEggCrates ?? 0,
+                totalHenSold: todayStats?.numHensSold ?? 0,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    LineChartWidget(
+                      dataSpots: extractDataSpots(viewModel.last7DaysStats),
+                      colors: [Colors.blue],
+                      titlesData: buildTitlesData(viewModel.last7DaysStats),
+                    ),
+                    SizedBox(height: 16),
+                    buildSectionTitle('num_egg_crates_7_days'.translate),
+                    LineChartWidget(
+                      dataSpots: extractHensSoldDataSpots(viewModel.last7DaysStats),
+                      colors: [Colors.green],
+                      titlesData: buildTitlesData(viewModel.last7DaysStats),
+                    ),
+                    SizedBox(height: 16),
+                    buildSectionTitle('hen_sold_7_days'.translate),
+                    LineChartWidget(
+                      dataSpots: extractHenDeathsDataSpots(viewModel.last7DaysStats),
+                      colors: [Colors.red],
+                      titlesData: buildTitlesData(viewModel.last7DaysStats),
+                    ),
+                    buildSectionTitle('hen_deaths_7_days'.translate),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

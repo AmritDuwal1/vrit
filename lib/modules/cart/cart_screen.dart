@@ -186,10 +186,7 @@ class CartScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
-              'your_cart'.translate + ':', // Translate 'Your Cart:'
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+            PrimaryText(text: 'your_cart'.translate, fontWeight: FontWeight.bold,),
             SizedBox(height: 16),
             Expanded(
               child: CartPage(),

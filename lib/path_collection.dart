@@ -83,7 +83,7 @@ export 'package:poultry/helper/alert_dialog.dart';
 export 'package:provider/provider.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:flutter_localizations/flutter_localizations.dart';
-
+export 'package:poultry/helper/primary_text.dart';
 
 // export 'package:location/location.dart';
 export 'package:flutter_image_compress/flutter_image_compress.dart';
