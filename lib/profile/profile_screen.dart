@@ -194,6 +194,7 @@
 // }
 
 
+
 import 'package:flutter/material.dart';
 import 'package:poultry/helper/language_change_provider.dart';
 import 'package:poultry/modules/edit_profile/edit_profile.dart';
@@ -213,10 +214,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   // Define language options (for example)
   List<Map<String, String>> languageOptions = [
     {"code": "en", "name": "English"},
-    {"code": "ne", "name": "नेपाली"}
+    {"code": "es", "name": "नेपाली"}
   ];
 
-  String selectedLanguageCode = "en"; // Default language is English
+  String selectedLanguageCode = GlobalConstants.getSelectedLanguage();
 
   @override
   void initState() {
@@ -230,7 +231,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     LocalizationExtension.context = context;
     ProfileViewModel viewModel = Provider.of<ProfileViewModel>(context);
-    LanguageChangeProvider? languageProvider = LanguageChangeProvider.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -249,15 +249,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               if (code != null) {
                 setState(() {
                   selectedLanguageCode = code;
-                  // LanguageChangeProvider? languageProvider = LanguageChangeProvider.of(context);
-                  languageProvider?.changeLanguage(Locale('en')); // Change to English
+                  GlobalConstants.saveSelectedLanguage(code);
                 });
-                // Update localization context with selected language
-                // LocalizationExtension.changeLocale(context, Locale(code));
-                // changeLanguage(Locale('es'));
-                // LanguageChangeProvider.of(context)?.changeLanguage(Locale('en'));
-// Example of how you might change the language from ProfileScreen
-
               }
             },
           ),

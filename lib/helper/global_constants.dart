@@ -80,7 +80,11 @@ class GlobalConstants {
 
   static StreamController<bool> _loginStatusController =
   StreamController<bool>.broadcast();
+
+  static StreamController<String> _languageController =
+  StreamController<String>.broadcast();
   static late SharedPreferences _prefs;
+
 
   // Initialize shared preferences
   static Future<void> initSharedPreferences() async {
@@ -117,4 +121,21 @@ class GlobalConstants {
   static String? getFirebaseToken() {
     return _prefs.getString('firebase_token');
   }
+
+  // Save selected language to SharedPreferences
+  static void saveSelectedLanguage(String languageCode) {
+    _prefs.setString('selected_language', languageCode);
+    _languageController.add(languageCode); // Notify listeners about language change
+  }
+
+  static String getSelectedLanguage() {
+    String? savedLanguage = _prefs.getString('selected_language');
+    return savedLanguage ?? 'en'; // Return 'en' if nothing is saved
+  }
+
+  static void dispose() {
+    _languageController.close();
+  }
+  // Listen for language changes
+  static Stream<String> get languageChangeStream => _languageController.stream;
 }

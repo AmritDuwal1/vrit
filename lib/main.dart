@@ -78,21 +78,29 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale _locale = Locale('es');
+  Locale _locale = Locale(GlobalConstants.getSelectedLanguage());
 
-  void _changeLanguage(Locale locale) {
+
+  @override
+  void initState() {
+    super.initState();
+    GlobalConstants.languageChangeStream.listen((language) {
+      setState(() {
+        _locale = Locale(language);
+      });
+    });
+  }
+
+  // delete this later
+  void changeLanguage(Locale locale) {
     setState(() {
       _locale = locale;
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return LanguageChangeProvider(
-      changeLanguage: (locale) {
-        // Update _locale here
-        _locale = locale;
-      },
+      changeLanguage: changeLanguage,
       child: MultiProvider(
         providers: [
           ChangeNotifierProvider<HomeViewModel>(
@@ -123,7 +131,7 @@ class _MyAppState extends State<MyApp> {
           locale: _locale,
           supportedLocales: const [
             Locale('en', ''), // English
-            Locale('es', ''), // Spanish
+            Locale('es', ''), // Spanish treated as nepali
           ],
           localizationsDelegates: const [
             AppLocalizations.delegate,
@@ -149,12 +157,12 @@ class _MyAppState extends State<MyApp> {
             // Handle unknown routes if needed
             return MaterialPageRoute(builder: (context) => NotFoundScreen());
           },
-          builder: (context, child) {
-            return LanguageChangeProvider(
-              changeLanguage: _changeLanguage,
-              child: child!,
-            );
-          },
+          // builder: (context, child) {
+          //   return LanguageChangeProvider(
+          //     changeLanguage: _changeLanguage,
+          //     child: child!,
+          //   );
+          // },
         ),
       ),
     );
