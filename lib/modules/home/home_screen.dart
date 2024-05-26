@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
+
 import 'package:poultry/helper/alert_manager.dart';
 
 import 'package:poultry/model/poultry_stats_summary.dart';
@@ -9,6 +10,7 @@ import 'package:poultry/modules/home/add_data_form.dart';
 import 'package:poultry/modules/home/home_view_model.dart';
 import 'package:poultry/path_collection.dart';
 import 'package:provider/provider.dart';
+import 'package:poultry/helper/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -35,10 +37,14 @@ class _HomeScreenState extends State<HomeScreen>  {
     // HomeViewModel viewModel = Provider.of<HomeViewModel>(context);
     var todayStats = Provider.of<HomeViewModel>(context).todayStats;
     var viewModel = Provider.of<HomeViewModel>(context);
+    var localizedStrings = AppLocalizations.of(context)!;
+    LocalizationExtension.context = context;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        // title: Text('Home'),
+        // title: Text(localizedStrings.translate('Home') ?? 'Default Text'),
+        title: Text('hello'.translate),
       ),
       body: SingleChildScrollView(
         child: Column(

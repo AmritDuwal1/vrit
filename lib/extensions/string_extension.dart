@@ -1,3 +1,7 @@
+import 'package:poultry/helper/app_localizations.dart';
+
+import '../path_collection.dart';
+
 extension ExtString on String {
   bool get isNotNull {
     return this != null;
@@ -69,6 +73,36 @@ extension StringExtensions on String {
     return uri != null && (uri.scheme == 'http' || uri.scheme == 'https');
   }
 }
+
+// // Define the extension on String
+// extension LocalizedStringExtension on String {
+//   String translate(BuildContext context) {
+//     return AppLocalizations.of(context)?.translate(this) ?? this;
+//   }
+// }
+
+// Define a global variable for storing context
+BuildContext? _appLocalizationContext;
+
+
+// Extension on String for localization
+extension LocalizationExtension on String {
+  // Setter for the context
+  static set context(BuildContext context) {
+    _appLocalizationContext = context;
+  }
+
+  // Getter for the context
+  static BuildContext get context => _appLocalizationContext!;
+
+  // Method to translate the string
+  String get translate {
+    return AppLocalizations.of(context)?.translate(this) ?? this;
+  }
+}
+
+
+
 
 // extension NepaliPhoneNumberValidation on String {
 //   bool get isValidNepaliPhoneNumber {

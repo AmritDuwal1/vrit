@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:poultry/helper/alert_manager.dart';
+import 'package:poultry/helper/app_localizations.dart';
 import 'package:poultry/helper/global_constants.dart';
 import 'package:poultry/modules/cart/cart_view_model.dart';
 import 'package:poultry/modules/edit_profile/edit_profile.dart';
@@ -21,6 +22,8 @@ import 'helper/flutter_localNotification_plugin.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/foundation.dart' show defaultTargetPlatform;
+
+
 // Future<void> main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
 //   await GlobalConstants.initSharedPreferences(); // Initialize SharedPreferences
@@ -167,10 +170,90 @@ void main() async {
 //   }
 // }
 
-class MyApp extends StatelessWidget {
+// class MyApp extends StatelessWidget {
+//   final Widget homeScreen;
+//
+//   const MyApp({Key? key, required this.homeScreen}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return MultiProvider(
+//       providers: [
+//         ChangeNotifierProvider<HomeViewModel>(
+//           create: (context) => HomeViewModel(),
+//         ),
+//         ChangeNotifierProvider<ProfileViewModel>(
+//           create: (context) => ProfileViewModel(),
+//         ),
+//         ChangeNotifierProvider<RequestViewModel>(
+//           create: (context) => RequestViewModel(),
+//         ),
+//         ChangeNotifierProvider<CartViewModel>(
+//           create: (context) => CartViewModel(),
+//         ),
+//         ChangeNotifierProvider<AlertManager>(
+//           create: (context) => AlertManager(),
+//         ),
+//         ChangeNotifierProvider<EditProfileViewModel>(
+//           create: (context) => EditProfileViewModel(),
+//         ),
+//       ],
+//       child: MaterialApp(
+//         title: 'Duwal Poultry',
+//         theme: ThemeData(
+//           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+//           useMaterial3: true,
+//         ),
+//         supportedLocales: const [
+//           Locale('en', ''), // English
+//           Locale('es', ''), // Spanish
+//         ],
+//         localizationsDelegates: const [
+//           AppLocalizations.delegate,
+//           GlobalMaterialLocalizations.delegate,
+//           GlobalWidgetsLocalizations.delegate,
+//         ],
+//         debugShowCheckedModeBanner: false,
+//         initialRoute: '/',
+//         routes: {
+//           '/': (context) => StreamBuilder<bool>(
+//             stream: GlobalConstants.loginStatusStream,
+//             initialData: GlobalConstants.isLoggedIn,
+//             builder: (context, snapshot) {
+//               bool isLoggedIn = snapshot.data ?? false;
+//               return isLoggedIn ? TabBarScreen() : LoginScreen();
+//             },
+//           ),
+//           '/edit-profile': (context) => EditProfileScreen(user: GlobalConstants.getUser()), // Example route for editing profile
+//           // Add more routes as needed
+//         },
+//         onGenerateRoute: (settings) {
+//           // Handle unknown routes if needed
+//           return MaterialPageRoute(builder: (context) => NotFoundScreen());
+//         },
+//       ),
+//     );
+//   }
+// }
+
+
+class MyApp extends StatefulWidget {
   final Widget homeScreen;
 
   const MyApp({Key? key, required this.homeScreen}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale _locale = Locale('es');
+
+  void _changeLanguage(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -201,6 +284,17 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
+        locale: _locale,
+        supportedLocales: const [
+          Locale('en', ''), // English
+          Locale('es', ''), // Spanish
+        ],
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
@@ -219,9 +313,29 @@ class MyApp extends StatelessWidget {
           // Handle unknown routes if needed
           return MaterialPageRoute(builder: (context) => NotFoundScreen());
         },
+        builder: (context, child) {
+          return LanguageChangeProvider(
+            changeLanguage: _changeLanguage,
+            child: child!,
+          );
+        },
       ),
     );
   }
+}
+class LanguageChangeProvider extends InheritedWidget {
+  final Function(Locale) changeLanguage;
+
+  LanguageChangeProvider({
+    required Widget child,
+    required this.changeLanguage,
+  }) : super(child: child);
+
+  @override
+  bool updateShouldNotify(InheritedWidget oldWidget) => false;
+
+  static LanguageChangeProvider? of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<LanguageChangeProvider>();
 }
 
 
