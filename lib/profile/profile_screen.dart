@@ -25,10 +25,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    LocalizationExtension.context = context;
     ProfileViewModel viewModel = Provider.of<ProfileViewModel>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Profile'),
+        title: Text('My Profile'.translate),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -53,13 +54,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 16),
               Center(
                 child: Text(
-                  viewModel.user?.username ?? 'User',
+                  viewModel.user?.username ?? 'User'.translate,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center, // Optional: This ensures the text is centered within the Text widget
                 ),
               ),
               Text(
-                viewModel.user?.email ?? 'email',
+                viewModel.user?.email ?? 'email'.translate,
                 style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
               const SizedBox(height: 16),
@@ -72,81 +73,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 children: [
-                  buildProfileOption('Edit Profile', Icons.edit),
-                  // buildProfileOption('Notifications', Icons.notifications),
-                  // if (GlobalConstants.getUser()?.isHotelOwner == true)
-                  //   buildProfileOption('Create Hotel', Icons.hotel, onTap: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) => CreateAndEditHotelScreen(),
-                  //       ),
-                  //     );
-                  //   }),
-                  // if (GlobalConstants.getUser()?.isHotelOwner == true)
-                  //   buildProfileOption('My Hotels', Icons.hotel_class_rounded,
-                  //       onTap: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) => CreatorHotelsScreen(),
-                  //       ),
-                  //     );
-                  //   }),
-                  // buildProfileOption(
-                  //     GlobalConstants.getUser()?.isHotelOwner == true
-                  //         ? 'Booking Requests'
-                  //         : 'My Requests',
-                  //     Icons.people, onTap: () {
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => BookingRequestScreen(),
-                  //     ),
-                  //   );
-                  // }),
-                  buildProfileOption('Delete Account', Icons.delete, color: Colors.blue,
+                  buildProfileOption('Edit Profile'.translate, Icons.edit),
+                  buildProfileOption('delete_account'.translate, Icons.delete, color: Colors.blue,
                       onTap: () {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          title: const Text('Delete Account'),
+                          title:  Text('Delete Account'.translate),
                           content:
-                              const Text('Are you sure you want to delete your Account?'),
+                               Text('are_you_sure_delete_account'.translate),
                           actions: [
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop(); // Close the dialog
                               },
-                              child: const Text('Cancel'),
+                              child: Text('cancel_action'.translate),
                             ),
                             TextButton(
                               onPressed: () {
                                 listen();
                                 viewModel.deleteUser();
                               },
-                              child: const Text('Delete'),
+                              child: Text('delete_account'.translate),
                             ),
                           ],
                         );
                       },
                     );
                   }),
-                  buildProfileOption('Logout', Icons.logout, color: Colors.blue,
+                  buildProfileOption('Logout'.translate, Icons.logout, color: Colors.blue,
                       onTap: () {
                         AlertDialogUtils.showConfirmationDialog(
                           context,
-                          'Confirm Logout',
-                          'Are you sure you want to logout?',
+                          'Confirm Logout'.translate,
+                          'sure_logout'.translate,
                               () {
                             // Handle logout
                             GlobalConstants.removeUser(); // Clear user data
                             widget.onLogout();
                             // Perform other logout actions
                           },
-                          cancelButtonText: 'Dismiss',
-                          confirmButtonText: 'Sign Out',
+                          cancelButtonText: 'cancel_logout'.translate,
+                          confirmButtonText: 'Sign Out'.translate,
                         );
 
                       }),
@@ -202,7 +171,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       onTap: onTap != null
           ? onTap
           : () {
-              if (title == 'Edit Profile') {
+              if (title == 'Edit Profile'.translate) {
                 if (!GlobalConstants.isLoggedIn) {
                   Navigator.push(
                     context,
