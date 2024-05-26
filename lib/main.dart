@@ -85,7 +85,7 @@ void main() async {
   });
 
   // Initialize Firebase for iOS only
-  if (!kIsWeb && defaultTargetPlatform == TargetPlatform.iOS) {
+  // if (!kIsWeb && defaultTargetPlatform == TargetPlatform.iOS) {
     await Firebase.initializeApp();
     await FirebaseApi.initNotifications();
     String? token;
@@ -101,7 +101,7 @@ void main() async {
       badge: true,
       sound: true,
     );
-    FirebaseMessaging.instance.requestPermission(
+    await FirebaseMessaging.instance.requestPermission(
       alert: true,
       badge: true,
       provisional: false,
@@ -112,7 +112,7 @@ void main() async {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       showNotification(message);
     });
-  }
+  // }
 }
 
 
