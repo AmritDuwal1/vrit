@@ -153,6 +153,9 @@ class GlobalConstants {
     _prefs.setString('profile_image', imagePath);
   }
 
+  static void removeImagePath() {
+    _prefs?.remove('profile_image');
+  }
   // Retrieve birthdate from SharedPreferences
   static String? getBirthdate() {
     return _prefs.getString('birthdate');

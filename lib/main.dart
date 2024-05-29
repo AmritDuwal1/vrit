@@ -27,7 +27,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GlobalConstants.initSharedPreferences(); // Initialize SharedPreferences
   User? user = GlobalConstants.getUser(); // Retrieve user from SharedPreferences
-
+  GlobalConstants.removeImagePath();
   Widget homeScreen = user != null ? TabBarScreen() : LoginScreen(); // Determine the home screen based on user login status
 
   GlobalConstants.initSharedPreferences().then((_) {

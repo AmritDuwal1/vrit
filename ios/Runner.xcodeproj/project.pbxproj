@@ -498,7 +498,7 @@
 				DEVELOPMENT_TEAM = SQV87MQH24;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Duwal Poultry";
+				INFOPLIST_KEY_CFBundleDisplayName = Vrit;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -684,7 +684,7 @@
 				DEVELOPMENT_TEAM = SQV87MQH24;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Duwal Poultry";
+				INFOPLIST_KEY_CFBundleDisplayName = Vrit;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -710,7 +710,7 @@
 				DEVELOPMENT_TEAM = SQV87MQH24;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Duwal Poultry";
+				INFOPLIST_KEY_CFBundleDisplayName = Vrit;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

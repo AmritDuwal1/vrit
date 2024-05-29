@@ -1,7 +1,9 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:poultry/helper/flutter_localNotification_plugin.dart';
 import 'package:poultry/path_collection.dart';
 import 'dart:io';
 
@@ -41,9 +43,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       _birthdateController.text = GlobalConstants.getBirthdate() ?? ""; // Set birthdate initially
     });
 
-    _imagePath = GlobalConstants.getImagePath() ?? "";
+    // _imagePath = GlobalConstants.getImagePath() ?? "";
+
+    // Initialize notification plugin with platform-specific settings
+    flutterLocalNotificationsPlugin.initialize(
+        const InitializationSettings(
+            android: AndroidInitializationSettings('@drawable/ic_launcher'), // Replace with your app icon
+            iOS: DarwinInitializationSettings()));
 
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -134,11 +143,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             ),
             SizedBox(height: 30),
             PrimaryButton(text: 'Save'.translate, onPressed: () {
-
               GlobalConstants.saveBirthdate( _birthdateController.text);
-
-
-
               viewModel.updateProfile(
                 _emailController.text,
                 _firstNameController.text,
@@ -199,12 +204,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               width: 160,
               height: 160.0,
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: _imagePath != null
-                      ? FileImage(File(_imagePath!))
-                      : ImageLoader.getImageProvider(
-                    widget.user?.image ?? "",
-                  ),
+                // image: DecorationImage(
+                //   image: _imagePath != null
+                //       ? FileImage(File(_imagePath!))
+                //       : ImageLoader.getImageProvider(
+                //     widget.user?.image ?? "",
+                //   ),
+                //   fit: BoxFit.cover,
+                // ),
+                image: _imagePath != null
+                    ? DecorationImage(
+                  image: FileImage(File(_imagePath!)),
+                  fit: BoxFit.cover,
+                )
+                    : DecorationImage(
+                  image: AssetImage("assets/user_position.png"),
                   fit: BoxFit.cover,
                 ),
               ),

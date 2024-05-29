@@ -61,6 +61,10 @@ dependencies:
   path_provider: ^2.0.11
 #  shared_preferences: ^2.0.15
   json_annotation: ^4.5.0
+#  awesome_notifications: ^0.7.0
+  cached_network_image: ^3.0.0
+  toast: ^0.3.0
+  flutter_wallpaper_manager: ^0.0.4
 
 dev_dependencies:
   flutter_test:

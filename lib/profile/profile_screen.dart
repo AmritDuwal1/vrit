@@ -212,10 +212,10 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   // Define language options (for example)
-  List<Map<String, String>> languageOptions = [
-    {"code": "en", "name": "English"},
-    {"code": "es", "name": "नेपाली"}
-  ];
+  // List<Map<String, String>> languageOptions = [
+  //   {"code": "en", "name": "English"},
+  //   {"code": "es", "name": "नेपाली"}
+  // ];
 
   String selectedLanguageCode = GlobalConstants.getSelectedLanguage();
 
@@ -237,23 +237,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
         title: Text('My Profile'.translate),
         actions: [
           // Language selection dropdown
-          DropdownButton(
-            value: selectedLanguageCode,
-            items: languageOptions.map((language) {
-              return DropdownMenuItem(
-                value: language["code"],
-                child: Text(language["name"]!),
-              );
-            }).toList(),
-            onChanged: (String? code) {
-              if (code != null) {
-                setState(() {
-                  selectedLanguageCode = code;
-                  GlobalConstants.saveSelectedLanguage(code);
-                });
-              }
-            },
-          ),
+          // DropdownButton(
+          //   value: selectedLanguageCode,
+          //   items: languageOptions.map((language) {
+          //     return DropdownMenuItem(
+          //       value: language["code"],
+          //       child: Text(language["name"]!),
+          //     );
+          //   }).toList(),
+          //   onChanged: (String? code) {
+          //     if (code != null) {
+          //       setState(() {
+          //         selectedLanguageCode = code;
+          //         GlobalConstants.saveSelectedLanguage(code);
+          //       });
+          //     }
+          //   },
+          // ),
           SizedBox(width: 10),
         ],
       ),
@@ -284,11 +284,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: 160,
                   height: 160.0,
                   decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: FileImage(File(GlobalConstants.getImagePath() ?? ""))
-                      ,
+                    image:
+
+                    // GlobalConstants.getImagePath()  != null
+                    //     ? DecorationImage(
+                    //   image: FileImage(File(GlobalConstants.getImagePath()!)),
+                    //   fit: BoxFit.cover,
+                    // )
+                    //     :
+                    DecorationImage(
+                      image: AssetImage("assets/user_position.png"),
                       fit: BoxFit.cover,
                     ),
+                    // DecorationImage(
+                    //   image: FileImage(File(GlobalConstants.getImagePath() ?? ""))
+                    //   ,
+                    //   fit: BoxFit.cover,
+                    // ),
                   ),
                 ),
               ),
@@ -315,34 +327,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 physics: NeverScrollableScrollPhysics(),
                 children: [
                   buildProfileOption('Edit Profile'.translate, Icons.edit),
-                  buildProfileOption('delete_account'.translate, Icons.delete, color: Colors.blue,
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title:  Text('Delete Account'.translate),
-                              content:
-                              Text('are_you_sure_delete_account'.translate),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(); // Close the dialog
-                                  },
-                                  child: Text('cancel_action'.translate),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    listen();
-                                    viewModel.deleteUser();
-                                  },
-                                  child: Text('delete_account'.translate),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }),
+                  // buildProfileOption('delete_account'.translate, Icons.delete, color: Colors.blue,
+                  //     onTap: () {
+                  //       showDialog(
+                  //         context: context,
+                  //         builder: (BuildContext context) {
+                  //           return AlertDialog(
+                  //             title:  Text('Delete Account'.translate),
+                  //             content:
+                  //             Text('are_you_sure_delete_account'.translate),
+                  //             actions: [
+                  //               TextButton(
+                  //                 onPressed: () {
+                  //                   Navigator.of(context).pop(); // Close the dialog
+                  //                 },
+                  //                 child: Text('cancel_action'.translate),
+                  //               ),
+                  //               TextButton(
+                  //                 onPressed: () {
+                  //                   listen();
+                  //                   viewModel.deleteUser();
+                  //                 },
+                  //                 child: Text('delete_account'.translate),
+                  //               ),
+                  //             ],
+                  //           );
+                  //         },
+                  //       );
+                  //     }),
                   buildProfileOption('Logout'.translate, Icons.logout, color: Colors.blue,
                       onTap: () {
                         AlertDialogUtils.showConfirmationDialog(
