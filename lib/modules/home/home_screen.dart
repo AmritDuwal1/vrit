@@ -11,297 +11,349 @@ import 'package:poultry/modules/home/home_view_model.dart';
 import 'package:poultry/path_collection.dart';
 import 'package:provider/provider.dart';
 import 'package:poultry/helper/app_localizations.dart';
+import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_wallpaper_manager/flutter_wallpaper_manager.dart';
+import 'package:toast/toast.dart';
+
+const String apiKey = 'FiyA7RMWrjFrdiwQUdI6d2mzHvzZD16mCw791uNuW0sHWdrJPZcvc0Zr';
+
+// class HomeScreen extends StatefulWidget {
+//   @override
+//   State<HomeScreen> createState() => _HomeScreenState();
+// }
+//
+// class _HomeScreenState extends State<HomeScreen> {
+//   List<dynamic> photos = [];
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     fetchPhotos('nature'); // Initial fetch with a default query
+//   }
+//
+//   Future<void> fetchPhotos(String query) async {
+//     final String url = 'https://api.pexels.com/v1/search?query=$query&per_page=15';
+//     try {
+//       final response = await http.get(
+//         Uri.parse(url),
+//         headers: {'Authorization': apiKey},
+//       );
+//
+//       if (response.statusCode == 200) {
+//         final Map<String, dynamic> data = json.decode(response.body);
+//         setState(() {
+//           photos = data['photos'];
+//         });
+//       } else {
+//         throw Exception('Failed to load photos');
+//       }
+//     } catch (e) {
+//       print('Error fetching photos: $e');
+//     }
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Pexels API Demo'),
+//       ),
+//       body: GridView.builder(
+//         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//           crossAxisCount: 2,
+//           crossAxisSpacing: 8.0,
+//           mainAxisSpacing: 8.0,
+//         ),
+//         itemCount: photos.length,
+//         itemBuilder: (context, index) {
+//           return GestureDetector(
+//             onTap: () {
+//               Navigator.push(
+//                 context,
+//                 MaterialPageRoute(
+//                   builder: (context) => PhotoDetailPage(photo: photos[index]),
+//                 ),
+//               );
+//             },
+//             child: CachedNetworkImage(
+//               imageUrl: photos[index]['src']['tiny'],
+//               placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+//               errorWidget: (context, url, error) => Icon(Icons.error),
+//               fit: BoxFit.cover,
+//             ),
+//           );
+//         },
+//       ),
+//     );
+//   }
+// }
+//
+// class PhotoDetailPage extends StatelessWidget {
+//   final dynamic photo;
+//
+//   const PhotoDetailPage({Key? key, required this.photo}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Photo Detail'),
+//         actions: [
+//           IconButton(
+//             icon: Icon(Icons.wallpaper),
+//             onPressed: () async {
+//               await setWallpaper(context, photo['src']['original']);
+//             },
+//           ),
+//           IconButton(
+//             icon: Icon(Icons.favorite),
+//             onPressed: () {
+//               likePhoto(photo['id']);
+//               // Toast.show('Photo liked!', context: context, duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
+//             },
+//           ),
+//         ],
+//       ),
+//       body: Center(
+//         child: CachedNetworkImage(
+//           imageUrl: photo['src']['large2x'],
+//           placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+//           errorWidget: (context, url, error) => Icon(Icons.error),
+//           fit: BoxFit.contain,
+//         ),
+//       ),
+//     );
+//   }
+//
+//   Future<void> setWallpaper(BuildContext context, String imageUrl) async {
+//     try {
+//       int location = WallpaperManager.HOME_SCREEN; // or WallpaperManager.LOCK_SCREEN
+//       // final String result = await FlutterWallpaperManager.setWallpaperFromUrl(imageUrl, location);
+//       Toast.show('Wallpaper set successfully');
+//       // print('Wallpaper set: $result');
+//     } catch (e) {
+//       Toast.show('Failed to set wallpaper');
+//       print('Error setting wallpaper: $e');
+//     }
+//   }
+//
+//   void likePhoto(int photoId) {
+//     // Implement your logic to like the photo via API
+//     // Example: Make an HTTP POST request to like the photo
+//     // Replace this with actual API call to like photo
+//     print('Liked photo with ID: $photoId');
+//   }
+// }
+
 
 class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>  {
-
-  @override
-  HomeViewModel get viewModel => HomeViewModel();
+class _HomeScreenState extends State<HomeScreen> {
+  List<dynamic> photos = [];
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () {
-      Provider.of<HomeViewModel>(context, listen: false).fetchData();
-    });
-    // Future.delayed(const Duration(seconds: 5), () {
-    //   Provider.of<AlertManager>(context, listen: false).showAlert('This is an alert!');
-    // });
+    fetchPhotos('nature'); // Initial fetch with a default query
   }
 
-  Future<void> _refreshData() async {
-    // Fetch new data
-    Provider.of<HomeViewModel>(context, listen: false).fetchData();
-    // Simulate a delay for 2 seconds (adjust duration as needed)
-    await Future.delayed(Duration(seconds: 2));
+  Future<void> fetchPhotos(String query) async {
+    final String url = 'https://api.pexels.com/v1/search?query=$query&per_page=15';
+    try {
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {'Authorization': apiKey},
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        setState(() {
+          photos = data['photos'];
+        });
+      } else {
+        throw Exception('Failed to load photos');
+      }
+    } catch (e) {
+      print('Error fetching photos: $e');
+    }
+  }
+
+  Future<void> searchPhotos(String query) async {
+    if (query.isEmpty) return;
+    try {
+      final String url = 'https://api.pexels.com/v1/search?query=$query&per_page=15';
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {'Authorization': apiKey},
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        setState(() {
+          photos = data['photos'];
+        });
+      } else {
+        throw Exception('Failed to load photos');
+      }
+    } catch (e) {
+      print('Error searching photos: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // HomeViewModel viewModel = Provider.of<HomeViewModel>(context);
-    var todayStats = Provider.of<HomeViewModel>(context).todayStats;
-    var viewModel = Provider.of<HomeViewModel>(context);
-    var localizedStrings = AppLocalizations.of(context)!;
-    LocalizationExtension.context = context;
-
     return Scaffold(
       appBar: AppBar(
-        // title: Text('Home'),
-        // title: Text(localizedStrings.translate('Home') ?? 'Default Text'),
-        title: Text('home'.translate),
-      ),
-      body: RefreshIndicator(
-        onRefresh: _refreshData,
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Consumer<HomeViewModel>(
-                builder: (context, viewModel, child) {
-                  if (viewModel.result != null) {
-                    Future.delayed(Duration.zero, () {
-                      // AlertManager.showAlert(context, viewModel.result!.message);
-                      showResultDialog(context, viewModel.result!, () {
-                        viewModel.result = null;
-                      });
-                    });
-                  }
-                  return Container();
-                },
-              ),
-              TodayUpdateWidget(
-                totalHenDied: todayStats?.numDeadHens ?? 0,
-                totalFilledCrates: todayStats?.totalFilledEggCrates ?? 0,
-                totalHenSold: todayStats?.numHensSold ?? 0,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    LineChartWidget(
-                      dataSpots: extractDataSpots(viewModel.last7DaysStats),
-                      colors: [Colors.blue],
-                      titlesData: buildTitlesData(viewModel.last7DaysStats),
-                    ),
-                    SizedBox(height: 16),
-                    buildSectionTitle('num_egg_crates_7_days'.translate),
-                    LineChartWidget(
-                      dataSpots: extractHensSoldDataSpots(viewModel.last7DaysStats),
-                      colors: [Colors.green],
-                      titlesData: buildTitlesData(viewModel.last7DaysStats),
-                    ),
-                    SizedBox(height: 16),
-                    buildSectionTitle('hen_sold_7_days'.translate),
-                    LineChartWidget(
-                      dataSpots: extractHenDeathsDataSpots(viewModel.last7DaysStats),
-                      colors: [Colors.red],
-                      titlesData: buildTitlesData(viewModel.last7DaysStats),
-                    ),
-                    buildSectionTitle('hen_deaths_7_days'.translate),
-                  ],
-                ),
-              ),
-            ],
+        title: Text('Home'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () => _showSearchDialog(context),
           ),
-        ),
+        ],
       ),
-    );
-  }
-
-  Widget buildSectionTitle(String title) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      body: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 8.0,
+          mainAxisSpacing: 8.0,
         ),
-        SizedBox(height: 8),
-      ],
-    );
-  }
-
-  List<FlSpot> extractDataSpots(List<PoultryStats>? statsList) {
-    List<FlSpot> dataSpots = [];
-
-    if (statsList != null) {
-      for (int i = 0; i < statsList.length; i++) {
-        final totalFilledEggCrates = statsList[i].totalFilledEggCrates ?? 0;
-        dataSpots.add(FlSpot(i.toDouble(), totalFilledEggCrates.toDouble()));
-      }
-    }
-
-    return dataSpots;
-  }
-
-  List<FlSpot> extractHensSoldDataSpots(List<PoultryStats>? statsList) {
-    List<FlSpot> dataSpots = [];
-
-    if (statsList != null) {
-      for (int i = 0; i < statsList.length; i++) {
-        final numHensSold = statsList[i].numHensSold ?? 0;
-        dataSpots.add(FlSpot(i.toDouble(), numHensSold.toDouble()));
-      }
-    }
-
-    return dataSpots;
-  }
-
-  List<FlSpot> extractHenDeathsDataSpots(List<PoultryStats>? statsList) {
-    List<FlSpot> dataSpots = [];
-
-    if (statsList != null) {
-      for (int i = 0; i < statsList.length; i++) {
-        final numDeadHens = statsList[i].numDeadHens ?? 0;
-        dataSpots.add(FlSpot(i.toDouble(), numDeadHens.toDouble()));
-      }
-    }
-
-    return dataSpots;
-  }
-
-  FlTitlesData buildTitlesData(List<PoultryStats>? statsList) {
-    var last7DaysStats = statsList;
-    return FlTitlesData(
-      bottomTitles: SideTitles(
-        showTitles: true,
-        getTitles: (value) {
-          // Convert value to int to get index
-          final index = value.toInt();
-          // Get the date from the data spots
-          final date = DateTime.parse(last7DaysStats?[index].createdAt ?? "");
-          // Get the day of the week
-          final dayOfWeek = DateFormat.E().format(date); // E is for abbreviated day of the week (e.g., Sun, Mon)
-          return dayOfWeek;
-        },
-      ),
-      leftTitles: SideTitles(
-        showTitles: true,
-        getTitles: (value) {
-          // Return the Y-axis labels based on the maximum value in the data
-          final maxValue = statsList
-              ?.map((stats) => [stats.totalFilledEggCrates, stats.numHensSold, stats.numDeadHens].reduce((a, b) => a! > b! ? a : b))
-              .reduce((a, b) => a! > b! ? a : b)!;
-          final step = ((maxValue ?? 0) / 5).ceil(); // Divide into 5 segments
-          return (value.toInt() * step).toString();
+        itemCount: photos.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => PhotoDetailPage(photo: photos[index]),
+                ),
+              );
+            },
+            child: CachedNetworkImage(
+              imageUrl: photos[index]['src']['tiny'],
+              placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+              errorWidget: (context, url, error) => Icon(Icons.error),
+              fit: BoxFit.cover,
+            ),
+          );
         },
       ),
     );
   }
-}
 
-
-class LineChartWidget extends StatelessWidget {
-  final List<FlSpot> dataSpots;
-  final List<Color> colors;
-  final FlTitlesData titlesData;
-
-  LineChartWidget({
-    required this.dataSpots,
-    required this.colors,
-    required this.titlesData,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    if (dataSpots.isEmpty) {
-      return Container(
-        height: 200,
-        alignment: Alignment.center,
-        child: Text(
-          'no_data_available'.translate,
-          style: TextStyle(fontSize: 16),
-        ),
-      );
-    }
-
-    return Container(
-      height: 200,
-      child: LineChart(
-        LineChartData(
-          titlesData: titlesData,
-          borderData: FlBorderData(show: false),
-          gridData: FlGridData(show: false),
-          lineBarsData: [
-            LineChartBarData(
-              spots: dataSpots,
-              isCurved: true,
-              colors: colors,
-              barWidth: 5,
-              isStrokeCapRound: true,
-              belowBarData: BarAreaData(show: false),
+  void _showSearchDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        String searchQuery = '';
+        return AlertDialog(
+          title: Text('Search Photos'),
+          content: TextField(
+            onChanged: (value) {
+              searchQuery = value;
+            },
+            decoration: InputDecoration(
+              hintText: 'Enter search query',
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Search'),
+              onPressed: () {
+                Navigator.pop(context);
+                searchPhotos(searchQuery);
+              },
+            ),
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 }
 
-class TodayUpdateWidget extends StatelessWidget {
-  final int totalHenDied;
-  final int totalFilledCrates;
-  final int totalHenSold;
+class PhotoDetailPage extends StatelessWidget {
+  final dynamic photo;
 
-  TodayUpdateWidget({
-    required this.totalHenDied,
-    required this.totalFilledCrates,
-    required this.totalHenSold,
-  });
+  const PhotoDetailPage({Key? key, required this.photo}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8.0),
-        border: Border.all(color: Colors.grey.withOpacity(0.3)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "today_update".translate,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Photo Detail'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.wallpaper),
+            onPressed: () async {
+              await setWallpaper(context, photo['src']['original']);
+            },
           ),
-          SizedBox(height: 12),
-          if (totalHenDied == 0 && totalFilledCrates == 0 && totalHenSold == 0)
-            AddDataForm()
-          else
-            Column(
-              children: [
-                buildUpdateRow('total_hen_died'.translate, totalHenDied.toString()),
-                buildUpdateRow('total_filled_crates'.translate, totalFilledCrates.toString()),
-                buildUpdateRow('total_hen_sold'.translate, totalHenSold.toString()),
-              ],
-            ),
+          IconButton(
+            icon: Icon(Icons.favorite),
+            onPressed: () {
+              likePhoto(photo['id']);
+              // Toast.show('Photo liked!');
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Photo liked!'),
+                  duration: Duration(seconds: 2), // Adjust the duration as needed
+                ),
+              );
+            },
+          ),
         ],
+      ),
+      body: Center(
+        child: CachedNetworkImage(
+          imageUrl: photo['src']['large2x'],
+          placeholder: (context, url) => Center(child: CircularProgressIndicator()),
+          errorWidget: (context, url, error) => Icon(Icons.error),
+          fit: BoxFit.contain,
+        ),
       ),
     );
   }
 
-  Widget buildUpdateRow(String title, String value) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: TextStyle(fontSize: 16),
-          ),
-          Text(
-            value,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
-    );
+  Future<void> setWallpaper(BuildContext context, String imageUrl) async {
+    try {
+      int location = WallpaperManager.HOME_SCREEN; // or WallpaperManager.LOCK_SCREEN
+      // final String result = await FlutterWallpaperManager.setWallpaperFromUrl(imageUrl, location);
+      // Toast.show('Wallpaper set successfully');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Wallpaper set successfully!'),
+          duration: Duration(seconds: 2), // Adjust the duration as needed
+        ),
+      );
+      // print('Wallpaper set: $result');
+    } catch (e) {
+      // Toast.show('Failed to set wallpaper');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to set wallpaper!'),
+          duration: Duration(seconds: 2), // Adjust the duration as needed
+        ),
+      );
+      print('Error setting wallpaper: $e');
+    }
+  }
+
+  void likePhoto(int photoId) {
+    // Implement your logic to like the photo via API
+    // Example: Make an HTTP POST request to like the photo
+    // Replace this with actual API call to like photo
+    print('Liked photo with ID: $photoId');
   }
 }

@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Duwal Poultry</string>
+	<string>Vrit</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -70,5 +70,21 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIBackgroundModes</key>
+    <array>
+        <string>fetch</string>
+        <string>remote-notification</string>
+    </array>
+    <key>NSLocalNetworkUsageDescription</key>
+    <string>Used to deliver notifications.</string>
+    <key>NSCalendarsUsageDescription</key>
+    <string>Used to schedule notifications.</string>
+    <key>NSNotificationsUsageDescription</key>
+    <string>Used to display notifications.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>Used to pick an image from the camera.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Used to pick an image from the photo library.</string>
+
 </dict>
 </plist>
