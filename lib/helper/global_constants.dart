@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:path_provider/path_provider.dart';
 import 'package:poultry/model/user.dart';
 import 'package:poultry/path_collection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -138,4 +139,60 @@ class GlobalConstants {
   }
   // Listen for language changes
   static Stream<String> get languageChangeStream => _languageController.stream;
+
+
+
+  // Retrieve image path from SharedPreferences
+  static String? getImagePath() {
+    print(_prefs.getString('profile_image'));
+    return _prefs.getString('profile_image');
+  }
+
+  // Save image path to SharedPreferences
+  static void saveImagePath(String imagePath) {
+    _prefs.setString('profile_image', imagePath);
+  }
+
+  // Retrieve birthdate from SharedPreferences
+  static String? getBirthdate() {
+    return _prefs.getString('birthdate');
+  }
+
+  // Save birthdate to SharedPreferences
+  static void saveBirthdate(String birthdate) {
+    _prefs.setString('birthdate', birthdate);
+  }
+
+
+
+  // // Save image locally and return the path
+  // static Future<String> saveImageLocally(File image) async {
+  //   final directory = await getApplicationDocumentsDirectory();
+  //   final path = directory.path;
+  //   final fileName = 'profile_image_${DateTime.now().millisecondsSinceEpoch}.png';
+  //   final imagePath = '$path/$fileName';
+  //   final File localImage = await image.copy(imagePath);
+  //   saveImagePath(localImage.path);
+  //   return localImage.path;
+  // }
+
+  // Save image locally and return the path
+  static Future<String> saveImageLocally(XFile image) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final path = directory.path;
+    final fileName =
+        'profile_image_${DateTime.now().millisecondsSinceEpoch}.png';
+    final imagePath = '$path/$fileName';
+    final File localImage = File(imagePath);
+
+    // Save image file to the documents directory
+    await image.saveTo(path);
+
+    // Save the image path to SharedPreferences
+    saveImagePath(imagePath);
+
+    return imagePath;
+  }
+
+
 }

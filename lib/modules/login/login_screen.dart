@@ -36,53 +36,53 @@ class _LoginScreenState extends State<LoginScreen> {
           children: [
             const Center(
               child: Text(
-                "Duwal Poultry",
+                "Vrit Technology",
                 style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(height: 32.0),
-            TextField(
-              controller: usernameController,
-              decoration: InputDecoration(
-                labelText: 'Username',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            TextField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-              ),
-            ),
+            // TextField(
+            //   controller: usernameController,
+            //   decoration: InputDecoration(
+            //     labelText: 'Username',
+            //     border: OutlineInputBorder(),
+            //   ),
+            // ),
+            // const SizedBox(height: 16.0),
+            // TextField(
+            //   controller: passwordController,
+            //   obscureText: true,
+            //   decoration: InputDecoration(
+            //     labelText: 'Password',
+            //     border: OutlineInputBorder(),
+            //   ),
+            // ),
             const SizedBox(height: 32.0),
-            SizedBox(
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Call the login function when the button is pressed
-                  login(context);
-                },
-                child: const Text('Login'),
-              ),
-            ),
-            const SizedBox(height: 16.0),
-            SizedBox(
-              height: 50, // Set the desired height here
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RegisterScreen(),
-                    ),
-                  );
-                },
-                child: const Text('Register'),
-              ),
-            ),
+            // SizedBox(
+            //   height: 50,
+            //   child: ElevatedButton(
+            //     onPressed: () {
+            //       // Call the login function when the button is pressed
+            //       login(context);
+            //     },
+            //     child: const Text('Login'),
+            //   ),
+            // ),
+            // const SizedBox(height: 16.0),
+            // SizedBox(
+            //   height: 50, // Set the desired height here
+            //   child: ElevatedButton(
+            //     onPressed: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => RegisterScreen(),
+            //         ),
+            //       );
+            //     },
+            //     child: const Text('Register'),
+            //   ),
+            // ),
 
             // const SizedBox(height: 12.0),
             // buildLoginOption('Continue with Google', 'assets/google.webp', () {

@@ -192,6 +192,7 @@ class UserAPI {
       String? lastName,
       String? userName,
       String? phoneNumber,
+      String? birthDate,
       String? imagePath,
       Function(User) success,
       Function(FlutterError) failure,

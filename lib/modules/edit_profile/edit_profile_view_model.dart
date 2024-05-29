@@ -15,18 +15,22 @@ class EditProfileViewModel extends ChangeNotifier {
       lastName,
       userName,
       phoneNumber,
+      birthDate,
       imagePath,) {
     isLoading = true;
     notifyListeners();
+
     userApi.updateUser(
       email,
       firstName,
       lastName,
       userName,
       phoneNumber,
-      imagePath,
+      birthDate,
+      null,
           (user) {
         GlobalConstants.saveUser(user);
+
             isLoading = false;
         this.error = FlutterError('Update user successful.');
         notifyListeners();

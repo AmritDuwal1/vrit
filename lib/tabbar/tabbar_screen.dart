@@ -39,10 +39,10 @@ class _TabBarScreenState extends State<TabBarScreen> {
   }
 
   final List<Widget> _tabs = [
-    if (GlobalConstants.getUser()?.role == "owner")
+    // if (GlobalConstants.getUser()?.role == "owner")
     Tab1(),
-    CartTab(),
-    const Tab2(),
+    // CartTab(),
+    // const Tab2(),
     const Tab3(),
   ];
 
@@ -70,19 +70,19 @@ class _TabBarScreenState extends State<TabBarScreen> {
           color: Colors.blueGrey, // Set the color for unselected labels
         ),
         items:  [
-          if (GlobalConstants.getUser()?.role == "owner")
+          // if (GlobalConstants.getUser()?.role == "owner")
           BottomNavigationBarItem(
             icon: Icon(Icons.home, size: 24),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart, size: 24),
-            label: 'Cart',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.list, size: 24),
-            label: 'Requests',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.shopping_cart, size: 24),
+          //   label: 'Cart',
+          // ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.list, size: 24),
+          //   label: 'Requests',
+          // ),
           // if (GlobalConstants.isLoggedIn == true)
           BottomNavigationBarItem(
             icon: Icon(Icons.person, size: 24),

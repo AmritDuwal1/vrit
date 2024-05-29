@@ -263,15 +263,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // ClipRRect(
+              //   borderRadius: BorderRadius.circular(75),
+              //   child: Container(
+              //     width: 150,
+              //     height: 150.0,
+              //     decoration: BoxDecoration(
+              //       image: DecorationImage(
+              //         image: ImageLoader.getImageProvider(
+              //             viewModel.user?.image ?? ""),
+              //         fit: BoxFit.cover,
+              //       ),
+              //     ),
+              //   ),
+              // ),
+
               ClipRRect(
-                borderRadius: BorderRadius.circular(75),
+                borderRadius: BorderRadius.circular(80),
                 child: Container(
-                  width: 150,
-                  height: 150.0,
+                  width: 160,
+                  height: 160.0,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: ImageLoader.getImageProvider(
-                          viewModel.user?.image ?? ""),
+                      image: FileImage(File(GlobalConstants.getImagePath() ?? ""))
+                      ,
                       fit: BoxFit.cover,
                     ),
                   ),

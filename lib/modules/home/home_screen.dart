@@ -40,8 +40,6 @@ class _HomeScreenState extends State<HomeScreen>  {
     await Future.delayed(Duration(seconds: 2));
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     // HomeViewModel viewModel = Provider.of<HomeViewModel>(context);
